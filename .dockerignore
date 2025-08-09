@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.tmp
+*.swp
+.env
+.venv
+.git
+.gitignore
+.gitlab-ci.yml
+.github/
+.vscode/
+projects/
+web_output/

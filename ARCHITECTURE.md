@@ -173,21 +173,20 @@ flowchart TD
 - Database integration ready
 - Caching opportunities identified
 
-## Future Enhancements
+## Future Enhancements (Selected)
 
-### Planned Features
-1. **Custom Personalities**: User-defined AI personalities
-2. **Idea Generation**: Automated topic sourcing
-3. **Team Integration**: Slack/Discord bots
-4. **Enhanced Diagrams**: Multiple diagram types
-5. **Design Templates**: Reusable patterns
+### Feature Roadmap
+1. **Custom Personalities**: User-defined AI personas loaded from external prompt files
+2. **Team Integration**: Slack/Discord bot triggers & summaries
+3. **Diagram Semantics**: Edge labels, latency markers, subgraphs & zones at higher diagram_detail_level
+4. **Design Templates**: Reusable architectural pattern scaffolds
 
 ### Technical Improvements
-1. **Database Integration**: Persistent storage
-2. **Real-time UI**: WebSocket-based interface
-3. **API Server**: REST API for integrations
-4. **Monitoring**: Observability and metrics
-5. **Caching**: Response caching for efficiency
+1. **Database Integration**: Persistent indexed storage (instead of file-only)
+2. **API Server**: REST/GraphQL endpoints for triggering & retrieving sessions
+3. **Monitoring**: Observability hooks (OpenTelemetry spans for provider calls)
+4. **Caching**: Response caching / local model fallback for resilience
+5. **Real-time UI**: Streaming web UI for live debate viewing
 
 ## Dependencies
 
@@ -218,10 +217,10 @@ flowchart TD
 - Secrets management for API keys
 - Artifact storage in repository
 
-### Docker (Future)
-- Containerized deployment
-- Environment isolation
-- Scalable execution
+### Docker
+- Containerized deployment (Python + Node + mermaid-cli)
+- Environment isolation & reproducibility
+- Deterministic diagram rendering in CI
 
 ### Cloud Functions (Future)
 - Serverless execution

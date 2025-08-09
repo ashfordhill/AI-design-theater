@@ -27,8 +27,9 @@ Where AI personalities collaborate on software design! Watch as a visionary "Dre
 - **Dual AI Personalities**: Dreamer (creative, innovative) vs Cost Cutter (practical, efficient)
 - **Multi-Provider Support**: Uses both OpenAI and Anthropic for diverse perspectives (optional GPT‑5 preview override)
 - **Automatic Documentation**: Generates design documents and conversation transcripts
-- **Mermaid Diagrams**: Creates visual architecture diagrams automatically
+- **Mermaid Diagrams**: Creates visual architecture diagrams automatically (component graphs at higher detail levels)
 - **Keyword-Biased Idea Generation**: Bias random/daily topics via IDEA_KEYWORDS or CLI flag
+- **Configurable Debate & Diagram Depth**: Control disagreement level and diagram richness via CLI or workflow inputs
 - **Convergence Enforcement**: Sessions conclude with an explicit FINAL DESIGN block
 - **Extensible Architecture**: Easy to add new personalities and features
 - **GitHub Integration Ready**: Prepared for automated daily design sessions
@@ -84,6 +85,8 @@ python cli.py run "Your design topic" [OPTIONS]
 - `--context, -c`: Additional context for the discussion
 - `--max-turns, -t`: Maximum number of conversation turns (default: 20)
 - `--max-duration, -d`: Maximum duration in minutes (default: 30)
+- `--debate-intensity`: 0–10 (higher = more challenge & pushback; default 5)
+- `--diagram-detail`: 1–10 (>=7 component architecture graph; >=9 extended nodes)
 
 ### List Projects
 ```bash
@@ -168,7 +171,7 @@ src/
 - **Automated Daily Sessions**: GitHub Actions integration for daily design generation (already included via workflow)
 - **Custom Personalities**: Easy creation of new AI personalities
 - **Idea Generation**: Automatic sourcing of trending software topics
-- **Enhanced Diagrams**: Support for multiple diagram types
+- **Enhanced Diagrams**: Edge labels, subgraphs & richer semantics at high detail levels
 - **Team Integration**: Slack/Discord bots for team design sessions
 - **Design Templates**: Reusable patterns and starting points
 
@@ -217,6 +220,8 @@ Environment variables (see `.env.example`):
 | IDEA_KEYWORDS | Comma-separated keywords to bias topic selection |
 | DEFAULT_MAX_TURNS | Default max turns |
 | DEFAULT_MAX_DURATION_MINUTES | Default duration limit |
+| DEBATE_INTENSITY | (Optional) Default debate intensity override |
+| DIAGRAM_DETAIL_LEVEL | (Optional) Default diagram detail level override |
 
 CLI `--keywords` temporarily overrides IDEA_KEYWORDS for that invocation.
 

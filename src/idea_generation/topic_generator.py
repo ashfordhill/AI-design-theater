@@ -147,6 +147,32 @@ class TopicGenerator:
         except Exception:
             return None
 
+    def _get_recent_topics(self, limit: int = 5) -> List[str]:
+        """Return list of most recent topics up to limit for broader de-duplication."""
+        topics = []
+        try:
+            projects_dir = config.projects_dir
+            if not os.path.isdir(projects_dir):
+                return topics
+            entries = [d for d in os.listdir(projects_dir) if os.path.isdir(os.path.join(projects_dir, d))]
+            for name in sorted(entries, reverse=True):
+                session_path = os.path.join(projects_dir, name, 'session.json')
+                if not os.path.isfile(session_path):
+                    continue
+                try:
+                    with open(session_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                    t = data.get('config', {}).get('topic') or data.get('topic')
+                    if t:
+                        topics.append(t)
+                    if len(topics) >= limit:
+                        break
+                except Exception:
+                    continue
+        except Exception:
+            return topics
+        return topics
+
     def get_random_topic(self) -> Dict[str, str]:
         """Get a random topic from predefined list, with keyword bias, avoiding immediate repeats."""
         candidates = self._apply_keyword_bias(self.predefined_topics.copy())
@@ -220,6 +246,14 @@ class TopicGenerator:
                 topic = filtered[0]
             else:
                 topic = biased_all[0]
+        # Avoid very recent repetitions (broader than single last) by substituting alternative if needed
+        recent = set(self._get_recent_topics(limit=5))
+        if topic["topic"] in recent:
+            alt_pool = [t for t in self.predefined_topics if t["topic"] not in recent]
+            if alt_pool:
+                # apply bias to alt_pool too
+                biased_alt = self._apply_keyword_bias(alt_pool)
+                topic = biased_alt[0]
         return topic
     
     def get_trending_topic(self) -> Dict[str, str]:

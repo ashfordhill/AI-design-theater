@@ -48,6 +48,8 @@ class ConversationConfig(BaseModel):
     context: Optional[str] = None
     success_criteria: List[str] = Field(default_factory=list)
     tone: Optional[str] = Field(default=None, description="Stylistic tone guidance (e.g., 'casual')")
+    debate_intensity: int = Field(default=5, ge=0, le=10, description="Higher => more disagreement & challenge.")
+    diagram_detail_level: int = Field(default=5, ge=1, le=10, description="Controls richness of generated diagrams.")
 
 
 class DesignDocument(BaseModel):

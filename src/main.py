@@ -29,7 +29,9 @@ class AIDesignTheater:
         context: Optional[str] = None,
         max_turns: Optional[int] = None,
     max_duration_minutes: Optional[int] = None,
-    tone: Optional[str] = None
+    tone: Optional[str] = None,
+    debate_intensity: Optional[int] = None,
+    diagram_detail_level: Optional[int] = None
     ) -> str:
         """Run a complete design session and return the project directory path."""
         
@@ -43,7 +45,9 @@ class AIDesignTheater:
             context=context,
             max_turns=max_turns or config.default_max_turns,
             max_duration_minutes=max_duration_minutes or config.default_max_duration_minutes,
-            tone=tone
+            tone=tone,
+            debate_intensity=debate_intensity if debate_intensity is not None else 5,
+            diagram_detail_level=diagram_detail_level if diagram_detail_level is not None else 6
         )
         
         # Get personalities
@@ -57,7 +61,13 @@ class AIDesignTheater:
                 raise ValueError(f"Cannot connect to {personality.provider.value} for {personality.name}")
         
         print(f"🎭 Starting design conversation: {topic}")
-        print(f"👥 Participants: {dreamer.name} ({dreamer.provider.value}) & {cost_cutter.name} ({cost_cutter.provider.value})")
+        print(
+            f"👥 Participants: {dreamer.name} [{dreamer.model}] & {cost_cutter.name} [{cost_cutter.model}]"
+        )
+        print(
+            f"⚙️  Settings: turns≤{conv_config.max_turns}, duration≤{conv_config.max_duration_minutes}m, "
+            f"debate_intensity={conv_config.debate_intensity}, diagram_detail={conv_config.diagram_detail_level}"
+        )
         
         # Start and run conversation
         session = await self.conversation_manager.start_conversation(
@@ -89,7 +99,9 @@ class AIDesignTheater:
         
         # Generate Mermaid diagram
         print("📊 Generating architecture diagram...")
-        design_doc.mermaid_diagram = self.mermaid_generator.generate_architecture_diagram(design_doc)
+        design_doc.mermaid_diagram = self.mermaid_generator.generate_architecture_diagram(
+            design_doc, detail_level=conv_config.diagram_detail_level
+        )
         
         # Save everything
         print("💾 Saving project files...")

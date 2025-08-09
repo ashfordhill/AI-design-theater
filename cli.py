@@ -25,6 +25,8 @@ def run(
     max_turns: Optional[int] = typer.Option(None, "--max-turns", "-t", help="Maximum number of conversation turns"),
     max_duration: Optional[int] = typer.Option(None, "--max-duration", "-d", help="Maximum duration in minutes"),
     tone: Optional[str] = typer.Option(None, "--tone", help="Stylistic tone (e.g., casual, formal)"),
+    debate_intensity: Optional[int] = typer.Option(None, "--debate-intensity", help="0-10: Higher -> more disagreement & challenge"),
+    diagram_detail: Optional[int] = typer.Option(None, "--diagram-detail", help="1-10: Higher -> richer component diagrams"),
 ):
     """Run a design conversation between AI personalities."""
     
@@ -44,7 +46,9 @@ def run(
                     context=context,
                     max_turns=max_turns,
                     max_duration_minutes=max_duration,
-                    tone=tone
+                    tone=tone,
+                    debate_intensity=debate_intensity,
+                    diagram_detail_level=diagram_detail
                 )
                 
                 progress.update(task, description="✅ Session complete!")

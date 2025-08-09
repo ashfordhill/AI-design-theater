@@ -2,25 +2,86 @@
 
 import re
 from typing import List, Dict, Any, Optional
-from ..models import DesignDocument, ConversationSession
+from ..models import DesignDocument
 
 
 class MermaidGenerator:
     """Generates Mermaid diagrams from design conversations."""
     
-    def generate_architecture_diagram(self, design_doc: DesignDocument) -> str:
-        """Generate a Mermaid architecture diagram from the design document."""
-        # Analyze the content to determine diagram type
+    def generate_architecture_diagram(self, design_doc: DesignDocument, detail_level: int = 5) -> str:
+        """Generate a Mermaid architecture diagram from the design document.
+
+        detail_level (1-10) influences richness; >6 attempts component style.
+        """
         content = self._get_all_content(design_doc)
-        
+        if detail_level >= 7:
+            return self._generate_component_graph(design_doc, detail_level)
         if self._is_flowchart_suitable(content):
             return self._generate_flowchart(design_doc)
-        elif self._is_sequence_suitable(content):
+        if self._is_sequence_suitable(content):
             return self._generate_sequence_diagram(design_doc)
-        elif self._is_class_suitable(content):
+        if self._is_class_suitable(content):
             return self._generate_class_diagram(design_doc)
-        else:
-            return self._generate_generic_graph(design_doc)
+        return self._generate_generic_graph(design_doc)
+
+    def _generate_component_graph(self, design_doc: DesignDocument, detail_level: int) -> str:
+        """Generate a richer software architecture component diagram (graph LR)."""
+        mermaid = ["graph LR"]
+        # Basic inferred components
+        base_components = [
+            ("Client", "End User / UI"),
+            ("APIGW", "API Gateway"),
+            ("Auth", "Auth / IAM"),
+            ("SvcA", "Core Service"),
+            ("SvcB", "Aux Service"),
+            ("Queue", "Event / Queue"),
+            ("Cache", "Cache Layer"),
+            ("DB", "Primary DB"),
+            ("Obs", "Observability")
+        ]
+        # Add more if high detail
+        if detail_level >= 9:
+            base_components += [
+                ("CDN", "CDN / Edge"),
+                ("ObjStore", "Object Storage"),
+                ("Search", "Search Index"),
+                ("ML", "ML Inference"),
+                ("Analytics", "Analytics Sink")
+            ]
+        # Emit nodes
+        for ident, label in base_components[: (len(base_components) if detail_level >= 9 else 9)]:
+            mermaid.append(f"    {ident}[{label}]")
+        # Edges (simplified flow)
+        edges = [
+            ("Client", "CDN" if any(c[0]=="CDN" for c in base_components) else "APIGW"),
+            ("CDN" if any(c[0]=="CDN" for c in base_components) else "APIGW", "APIGW"),
+            ("APIGW", "Auth"),
+            ("APIGW", "SvcA"),
+            ("APIGW", "SvcB"),
+            ("SvcA", "Cache"),
+            ("SvcA", "Queue"),
+            ("SvcA", "DB"),
+            ("SvcB", "DB"),
+            ("Queue", "SvcB"),
+            ("SvcA", "Obs"),
+            ("SvcB", "Obs"),
+        ]
+        if detail_level >= 9:
+            edges += [
+                ("APIGW", "ML"),
+                ("SvcA", "Search"),
+                ("SvcB", "ObjStore"),
+                ("DB", "Analytics"),
+                ("Queue", "Analytics")
+            ]
+        # Deduplicate edges
+        seen = set()
+        for a,b in edges:
+            if (a,b) in seen:
+                continue
+            seen.add((a,b))
+            mermaid.append(f"    {a} --> {b}")
+        return "\n".join(mermaid)
     
     def _get_all_content(self, design_doc: DesignDocument) -> str:
         """Get all textual content from the design document."""

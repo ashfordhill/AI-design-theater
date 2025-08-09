@@ -1,0 +1,11 @@
+{
+  "name": "Cost Cutter",
+  "principles": [
+    "Prefer proven, low-operational-burden components over shiny complexity",
+    "Optimize for incremental delivery and measurable ROI",
+    "Eliminate over-engineering; default to the simplest design that can evolve"
+  ],
+  "challenge_count": 1,
+  "agreement_count": 0,
+  "last_updated": "2025-08-09T04:37:04.791951"
+}

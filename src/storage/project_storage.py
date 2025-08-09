@@ -199,6 +199,7 @@ class ProjectStorage:
                 success = proc.returncode == 0 and svg_out.exists()
                 with open(log_file, 'a', encoding='utf-8') as lf:
                     lf.write(f"[{label}] returncode={proc.returncode}\n")
+                    lf.write(f"cmd: {' '.join(cmd)}\n")
                     if proc.stdout:
                         lf.write(f"stdout:\n{proc.stdout[:500]}\n")
                     if proc.stderr:
@@ -230,6 +231,41 @@ class ProjectStorage:
         if shutil.which('npx'):
             run_cmd(['npx', '-y', '@mermaid-js/mermaid-cli', '-i', str(mermaid_file), '-o', str(svg_out), '--quiet'], 'npx_svg')
             run_cmd(['npx', '-y', '@mermaid-js/mermaid-cli', '-i', str(mermaid_file), '-o', str(png_out), '--quiet'], 'npx_png')
+
+        # Strategy 4: direct 'mermaid' binary (newer CLI exposes this) if present
+        if not svg_out.exists() and shutil.which('mermaid'):
+            run_cmd(['mermaid', '-i', str(mermaid_file), '-o', str(svg_out)], 'mermaid_bin_svg')
+            run_cmd(['mermaid', '-i', str(mermaid_file), '-o', str(png_out)], 'mermaid_bin_png')
+
+        # Strategy 5: direct node module execution if node present but above failed
+        if not svg_out.exists():
+            node_path = shutil.which('node')
+            if node_path:
+                candidates = []
+                # Common global install locations to probe
+                possible_roots = [
+                    Path(node_path).parent / 'node_modules',
+                    Path('/usr/lib/node_modules'),
+                    Path('/usr/local/lib/node_modules'),
+                    Path(os.getenv('NVM_HOME', '')) / 'node_modules',
+                    Path(os.getenv('APPDATA', '')) / 'npm' / 'node_modules'
+                ]
+                for root in possible_roots:
+                    if root and root.exists():
+                        for rel in [
+                            '@mermaid-js/mermaid-cli/src/cli.js',
+                            '@mermaid-js/mermaid-cli/dist/index.cjs',
+                            '@mermaid-js/mermaid-cli/dist/index.js',
+                            '@mermaid-js/mermaid-cli/dist/cli/index.js'
+                        ]:
+                            candidate = root / rel
+                            if candidate.exists():
+                                candidates.append(candidate)
+                for c in candidates[:1]:  # first match
+                    run_cmd([node_path, str(c), '-i', str(mermaid_file), '-o', str(svg_out), '--quiet'], 'node_direct_svg')
+                    run_cmd([node_path, str(c), '-i', str(mermaid_file), '-o', str(png_out), '--quiet'], 'node_direct_png')
+                    if svg_out.exists():
+                        break
 
         # If still missing, append summary
         if not svg_out.exists():
