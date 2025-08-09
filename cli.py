@@ -25,8 +25,8 @@ def run(
     max_turns: Optional[int] = typer.Option(None, "--max-turns", "-t", help="Maximum number of conversation turns"),
     max_duration: Optional[int] = typer.Option(None, "--max-duration", "-d", help="Maximum duration in minutes"),
     tone: Optional[str] = typer.Option(None, "--tone", help="Stylistic tone (e.g., casual, formal)"),
-    debate_intensity: Optional[int] = typer.Option(None, "--debate-intensity", help="0-10: Higher -> more disagreement & challenge"),
-    diagram_detail: Optional[int] = typer.Option(None, "--diagram-detail", help="1-10: Higher -> richer component diagrams"),
+    debate_intensity: Optional[int] = typer.Option(None, "--debate-intensity", help="0-10: Higher -> more disagreement & challenge (env DEBATE_INTENSITY default)"),
+    diagram_detail: Optional[int] = typer.Option(None, "--diagram-detail", help="1-10: Higher -> richer component diagrams (env DIAGRAM_DETAIL_LEVEL default)"),
 ):
     """Run a design conversation between AI personalities."""
     

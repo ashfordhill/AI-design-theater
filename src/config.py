@@ -24,6 +24,8 @@ class Config(BaseModel):
     # Conversation defaults
     default_max_turns: int = int(os.getenv("DEFAULT_MAX_TURNS", "20"))
     default_max_duration_minutes: int = int(os.getenv("DEFAULT_MAX_DURATION_MINUTES", "30"))
+    default_debate_intensity: int = int(os.getenv("DEBATE_INTENSITY", "5"))
+    default_diagram_detail_level: int = int(os.getenv("DIAGRAM_DETAIL_LEVEL", "6"))
     
     # File paths
     projects_dir: str = os.getenv("PROJECTS_DIR", "projects")

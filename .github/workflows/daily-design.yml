@@ -17,9 +17,9 @@ on:
         required: false
         type: string
       mode:
-        description: 'Topic source: daily (default) or random'
+        description: 'Topic source: daily or random (default random)'
         required: false
-        default: 'daily'
+        default: 'random'
         type: choice
         options: [daily, random]
       debate_intensity:
@@ -70,13 +70,17 @@ jobs:
         TOPIC_MODE: ${{ github.event.inputs.mode }}
       run: |
         set -e
+        # If TOPIC_MODE not provided (e.g. schedule), default to random for more variety
+        if [ -z "${TOPIC_MODE}" ]; then
+          TOPIC_MODE=random
+        fi
         if [ -n "${{ github.event.inputs.topic }}" ]; then
           echo "Using manually provided topic"
           echo "topic=${{ github.event.inputs.topic }}" >> $GITHUB_OUTPUT
           echo "context=${{ github.event.inputs.context }}" >> $GITHUB_OUTPUT
         else
-          echo "Generating topic via application TopicGenerator (mode: ${TOPIC_MODE:-daily})"
-          python -c "from src.idea_generation.topic_generator import TopicGenerator; import os; m=os.environ.get('TOPIC_MODE','daily').strip().lower(); tg=TopicGenerator(); d=tg.get_random_topic() if m=='random' else tg.get_daily_topic(); topic=d['topic']; context=d.get('context','') or ''; print('Topic:', topic); print('Context:', context); open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8').write(f'topic={topic}\\ncontext={context}\\n')"
+          echo "Generating topic via application TopicGenerator (mode: ${TOPIC_MODE})"
+          python -c "from src.idea_generation.topic_generator import TopicGenerator; import os; m=os.environ.get('TOPIC_MODE','random').strip().lower(); tg=TopicGenerator(); d=tg.get_random_topic() if m=='random' else tg.get_daily_topic(); topic=d['topic']; context=d.get('context','') or ''; print('Topic:', topic); print('Context:', context); open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8').write(f'topic={topic}\ncontext={context}\n')"
         fi
     
     - name: Run AI Design Session
@@ -90,6 +94,33 @@ jobs:
           --max-duration 45 \
           --debate-intensity "${{ github.event.inputs.debate_intensity || '5' }}" \
           --diagram-detail "${{ github.event.inputs.diagram_detail || '6' }}"
+
+    - name: Ensure diagram assets (fallback render if missing)
+      run: |
+        set -e
+        latest=$(ls -1d projects/* | sort | tail -n1 || true)
+        if [ -z "$latest" ]; then
+          echo "No project directory found"; exit 0; fi
+        if [ -f "$latest/diagram.svg" ]; then
+          echo "SVG already present: $latest/diagram.svg"; exit 0; fi
+        if [ ! -f "$latest/diagram.mmd" ]; then
+          echo "No diagram.mmd file to render"; exit 0; fi
+        echo "Attempting fallback rendering via npx mermaid-cli";
+        npx -y @mermaid-js/mermaid-cli -i "$latest/diagram.mmd" -o "$latest/diagram.svg" || true
+        npx -y @mermaid-js/mermaid-cli -i "$latest/diagram.mmd" -o "$latest/diagram.png" || true
+        if [ -f "$latest/diagram.svg" ]; then
+          echo "Fallback render succeeded."; else echo "Fallback render failed."; fi
+
+    - name: Upload diagram render logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: diagram-render-logs
+        path: |
+          projects/**/diagram_render.log
+          projects/**/diagram.mmd
+          projects/**/diagram.svg
+          projects/**/diagram.png
 
     - name: Update docs (README & PROJECTS_INDEX)
       run: |

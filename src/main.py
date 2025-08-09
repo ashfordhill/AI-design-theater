@@ -46,8 +46,8 @@ class AIDesignTheater:
             max_turns=max_turns or config.default_max_turns,
             max_duration_minutes=max_duration_minutes or config.default_max_duration_minutes,
             tone=tone,
-            debate_intensity=debate_intensity if debate_intensity is not None else 5,
-            diagram_detail_level=diagram_detail_level if diagram_detail_level is not None else 6
+            debate_intensity=debate_intensity if debate_intensity is not None else config.default_debate_intensity,
+            diagram_detail_level=diagram_detail_level if diagram_detail_level is not None else config.default_diagram_detail_level
         )
         
         # Get personalities
