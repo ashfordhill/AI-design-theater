@@ -79,6 +79,8 @@ class ProjectStorage:
             f.write(f"**Participants:** {', '.join(participant_meta)}\n\n")
             f.write(f"**Started:** {session.started_at}\n\n")
             f.write(f"**Status:** {session.status}\n\n")
+            if session.error_message:
+                f.write(f"**Error:** {session.error_message}\n\n")
             
             if session.config.context:
                 f.write(f"**Context:** {session.config.context}\n\n")

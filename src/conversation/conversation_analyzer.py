@@ -15,6 +15,11 @@ class ConversationAnalyzer:
         # Extract key information
         title = self._extract_title(session)
         description = self._extract_description(messages)
+        if session.status == "error":
+            description = (
+                "Conversation aborted due to an error before completion. Partial ideas captured. "
+                + (session.error_message or "")
+            )
         key_decisions = self._extract_key_decisions(messages)
         trade_offs = self._extract_trade_offs(messages)
         implementation_notes = self._extract_implementation_notes(messages)
@@ -158,5 +163,9 @@ class ConversationAnalyzer:
             summary += "The conversation was concluded due to time limits."
         elif session.status == "max_turns_reached":
             summary += "The conversation reached the maximum number of turns."
+        elif session.status == "error":
+            summary += f"The conversation terminated early due to an error: {session.error_message}."
+        elif session.status == "incomplete":
+            summary += "The conversation ended without a FINAL DESIGN section."
         
         return summary

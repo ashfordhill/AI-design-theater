@@ -38,7 +38,8 @@ class OpenAIProvider(BaseLLMProvider):
             )
             return response.choices[0].message.content.strip()
         except Exception as e:
-            raise Exception(f"OpenAI API error: {str(e)}")
+            meta = f"model={personality.model} name={personality.name}"
+            raise Exception(f"OpenAI API error ({meta}): {str(e)}")
     
     def format_messages(self, messages: List[ConversationMessage]) -> List[Dict[str, Any]]:
         """Format messages for OpenAI API."""

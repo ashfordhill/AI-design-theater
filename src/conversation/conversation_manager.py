@@ -2,6 +2,7 @@
 
 import asyncio
 import uuid
+import traceback
 from datetime import datetime, timedelta
 from typing import List, Optional, Tuple
 from ..models import (
@@ -64,12 +65,22 @@ class ConversationManager:
             current_personality = session.participants[current_speaker_idx]
             
             try:
-                # Generate response from current speaker
-                response = await self.personality_manager.generate_response(
-                    current_personality,
-                    session.messages,
-                    session.config.context
-                )
+                # Generate response with basic retry
+                response = None
+                last_error = None
+                for attempt in range(3):
+                    try:
+                        response = await self.personality_manager.generate_response(
+                            current_personality,
+                            session.messages,
+                            session.config.context
+                        )
+                        break
+                    except Exception as gen_err:
+                        last_error = gen_err
+                        await asyncio.sleep(1 + attempt)
+                if response is None:
+                    raise last_error or Exception("Unknown generation failure")
                 
                 # Add response to conversation
                 message = ConversationMessage(
@@ -102,7 +113,27 @@ class ConversationManager:
                 
             except Exception as e:
                 session.status = "error"
-                print(f"Error in conversation: {e}")
+                # Capture full traceback for diagnostics
+                tb = traceback.format_exc()
+                session.error_message = f"{e}\n{tb}"
+                print(f"Error in conversation: {e}\n{tb}")
+                # Attempt at least one message from the other participant if none yet
+                assistant_msgs = [m for m in session.messages if m.role == MessageRole.ASSISTANT]
+                if len(assistant_msgs) < 1 and len(session.participants) == 2:
+                    try:
+                        other_idx = 1 - current_speaker_idx
+                        other_personality = session.participants[other_idx]
+                        fallback = (
+                            "Encountered an error generating a response from the first participant. "
+                            "Providing an initial perspective to allow partial artifacts. Error details were logged."
+                        )
+                        session.messages.append(ConversationMessage(
+                            role=MessageRole.ASSISTANT,
+                            content=fallback,
+                            speaker=other_personality.name
+                        ))
+                    except Exception:
+                        pass
                 break
         
         # Determine final status
@@ -112,6 +143,9 @@ class ConversationManager:
             session.status = "timeout"
         elif turn_count >= session.config.max_turns:
             session.status = "max_turns_reached"
+        elif session.status != "error":
+            # If not completed but also not flagged, mark as partial
+            session.status = "incomplete"
         
         session.ended_at = datetime.now()
         return session

@@ -73,3 +73,4 @@ class ConversationSession(BaseModel):
     ended_at: Optional[datetime] = None
     design_document: Optional[DesignDocument] = None
     status: str = "active"  # active, completed, timeout, error
+    error_message: Optional[str] = None  # captured error detail if status=error
