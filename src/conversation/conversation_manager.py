@@ -57,6 +57,7 @@ class ConversationManager:
             initial_message = self._create_initial_message(session.config)
             session.messages.append(initial_message)
         
+        disabled_speakers = set()
         while (
             turn_count < session.config.max_turns and
             datetime.now() - start_time < max_duration and
@@ -112,29 +113,54 @@ class ConversationManager:
                 await asyncio.sleep(0.5)
                 
             except Exception as e:
-                session.status = "error"
-                # Capture full traceback for diagnostics
+                err_text = str(e)
+                lower_err = err_text.lower()
                 tb = traceback.format_exc()
-                session.error_message = f"{e}\n{tb}"
                 print(f"Error in conversation: {e}\n{tb}")
-                # Attempt at least one message from the other participant if none yet
-                assistant_msgs = [m for m in session.messages if m.role == MessageRole.ASSISTANT]
-                if len(assistant_msgs) < 1 and len(session.participants) == 2:
-                    try:
-                        other_idx = 1 - current_speaker_idx
-                        other_personality = session.participants[other_idx]
-                        fallback = (
-                            "Encountered an error generating a response from the first participant. "
-                            "Providing an initial perspective to allow partial artifacts. Error details were logged."
-                        )
+                # Handle OpenAI insufficient quota gracefully: disable this speaker and let other continue solo
+                if "insufficient_quota" in lower_err or "quota" in lower_err:
+                    disabled_speakers.add(current_speaker_idx)
+                    session.error_message = (session.error_message or "") + f"\nDisabled {current_personality.name} due to quota exhaustion: {err_text}"
+                    # System instruction for remaining participant to emulate both roles
+                    remaining_idx = 1 - current_speaker_idx
+                    if remaining_idx not in disabled_speakers:
                         session.messages.append(ConversationMessage(
-                            role=MessageRole.ASSISTANT,
-                            content=fallback,
-                            speaker=other_personality.name
+                            role=MessageRole.USER,
+                            content=(
+                                f"System notice: {current_personality.name} is unavailable (quota). "
+                                f"{session.participants[remaining_idx].name}, continue the architectural debate by also "
+                                "representing cost/pragmatic trade-offs. Aim to converge and provide a FINAL DESIGN section."),
+                            speaker="system"
                         ))
-                    except Exception:
-                        pass
-                break
+                        # Switch permanently to remaining speaker
+                        current_speaker_idx = remaining_idx
+                        # Do not increment turn_count here (the next successful response will)
+                        continue
+                    else:
+                        session.status = "error"
+                        session.error_message = (session.error_message or "") + f"\nAll participants disabled (quota)."
+                        break
+                else:
+                    session.status = "error"
+                    session.error_message = f"{err_text}\n{tb}"
+                    # Attempt at least one message from the other participant if none yet
+                    assistant_msgs = [m for m in session.messages if m.role == MessageRole.ASSISTANT]
+                    if len(assistant_msgs) < 1 and len(session.participants) == 2:
+                        try:
+                            other_idx = 1 - current_speaker_idx
+                            other_personality = session.participants[other_idx]
+                            fallback = (
+                                "Encountered an error generating a response from the first participant. "
+                                "Providing an initial perspective to allow partial artifacts. Error details were logged."
+                            )
+                            session.messages.append(ConversationMessage(
+                                role=MessageRole.ASSISTANT,
+                                content=fallback,
+                                speaker=other_personality.name
+                            ))
+                        except Exception:
+                            pass
+                    break
         
         # Determine final status
         if self._is_conversation_complete(session):
