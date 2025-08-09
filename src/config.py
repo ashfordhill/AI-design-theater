@@ -29,13 +29,16 @@ class Config(BaseModel):
     projects_dir: str = os.getenv("PROJECTS_DIR", "projects")
 
     # Idea generation keyword bias (comma separated)
+    # Store initial raw but property will re-read environment for dynamic overrides
     idea_keywords_raw: Optional[str] = os.getenv("IDEA_KEYWORDS")
 
     @property
     def idea_keywords(self) -> List[str]:
-        if not self.idea_keywords_raw:
+        # Always fetch current env to allow runtime overrides (CLI or workflow step)
+        raw = os.getenv("IDEA_KEYWORDS", self.idea_keywords_raw or "")
+        if not raw:
             return []
-        return [k.strip() for k in self.idea_keywords_raw.split(',') if k.strip()]
+        return [k.strip() for k in raw.split(',') if k.strip()]
     
     # GitHub integration (for future use)
     github_token: Optional[str] = os.getenv("GITHUB_TOKEN")

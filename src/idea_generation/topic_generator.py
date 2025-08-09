@@ -1,6 +1,14 @@
-"""Generate design topics from various sources."""
+"""Generate design topics from various sources.
+
+Enhancements:
+- Dynamic keyword bias (reads config each call so env overrides work)
+- Avoid immediate repetition of the last used topic when possible
+- Weighted random selection among top scored candidates instead of uniform in fixed slice
+"""
 
 import random
+import os
+import json
 from typing import List, Dict, Optional
 from datetime import datetime
 
@@ -113,20 +121,66 @@ class TopicGenerator:
             text = (t["topic"] + " " + t.get("context", "")).lower()
             score = sum(1 for k in keywords if k in text)
             # Add small random jitter to avoid deterministic always-first when equal
+            t = dict(t)  # shallow copy to avoid mutating original list
+            t["bias_score"] = score
             scored.append((score + random.random() * 0.01, t))
         # Sort descending by score
         scored.sort(key=lambda x: x[0], reverse=True)
         return [t for _, t in scored]
 
+    def _get_last_topic(self) -> Optional[str]:
+        """Try to read the most recent project's topic to reduce repetition."""
+        try:
+            projects_dir = config.projects_dir
+            if not os.path.isdir(projects_dir):
+                return None
+            entries = [d for d in os.listdir(projects_dir) if os.path.isdir(os.path.join(projects_dir, d))]
+            if not entries:
+                return None
+            latest = sorted(entries)[-1]
+            session_path = os.path.join(projects_dir, latest, 'session.json')
+            if not os.path.isfile(session_path):
+                return None
+            with open(session_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            return data.get('config', {}).get('topic') or data.get('topic')
+        except Exception:
+            return None
+
     def get_random_topic(self) -> Dict[str, str]:
-        """Get a random topic from predefined list, with keyword bias if configured."""
+        """Get a random topic from predefined list, with keyword bias, avoiding immediate repeats."""
         candidates = self._apply_keyword_bias(self.predefined_topics.copy())
-        topic_data = random.choice(candidates[:5]) if len(candidates) > 5 else candidates[0]
+        if not candidates:
+            raise ValueError("No topics available")
+
+        # If any have positive bias_score, restrict selection to those
+        positive = [c for c in candidates if c.get("bias_score", 0) > 0]
+        selection_pool = positive if positive else candidates
+
+        # Compute weighted probabilities based on relative score rank (earlier = higher score)
+        weights = [1.0 / (i + 1) for i in range(len(selection_pool))]  # simple harmonic decay
+        total_w = sum(weights)
+        rnd = random.random() * total_w
+        cumulative = 0.0
+        chosen = selection_pool[-1]
+        for c, w in zip(selection_pool, weights):
+            cumulative += w
+            if rnd <= cumulative:
+                chosen = c
+                break
+
+        last_topic = self._get_last_topic()
+        if last_topic and chosen["topic"] == last_topic:
+            # Try to pick an alternative with same or next best weighting
+            alt = [c for c in selection_pool if c["topic"] != last_topic]
+            if alt:
+                chosen = random.choice(alt[: min(5, len(alt))])
+
         # Optionally add a trending context
         if random.random() < 0.3:
             additional_context = random.choice(self.trending_contexts)
-            topic_data["context"] += f". {additional_context}"
-        return topic_data
+            chosen["context"] += f". {additional_context}"
+        return chosen
     
     def get_topic_by_category(self, category: str) -> Optional[Dict[str, str]]:
         """Get a random topic from a specific category."""

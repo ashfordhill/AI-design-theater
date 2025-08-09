@@ -24,3 +24,14 @@ def test_convergence_detection():
     session.messages.append(ConversationMessage(role=MessageRole.ASSISTANT, content="Some discussion", speaker="Dreamer"))
     session.messages.append(ConversationMessage(role=MessageRole.ASSISTANT, content="FINAL DESIGN: summary", speaker="Cost Cutter"))
     assert cm._is_conversation_complete(session) is True
+
+
+def test_dynamic_keyword_override(monkeypatch):
+    # Ensure changing env after config import affects keyword bias
+    monkeypatch.setenv("IDEA_KEYWORDS", "saas")
+    import random
+    random.seed(42)
+    tg = TopicGenerator()
+    topics = [tg.get_random_topic() for _ in range(5)]
+    # At least one selected topic should belong to the 'saas' category, indicating bias worked
+    assert any(t.get("category") == "saas" for t in topics)
