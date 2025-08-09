@@ -3,6 +3,7 @@
 import asyncio
 import uuid
 import traceback
+import re
 from datetime import datetime, timedelta
 from typing import List, Optional, Tuple
 from ..models import (
@@ -56,8 +57,16 @@ class ConversationManager:
         if not session.messages or session.messages[-1].role == MessageRole.USER:
             initial_message = self._create_initial_message(session.config)
             session.messages.append(initial_message)
-        
+
         disabled_speakers = set()
+        session.metadata.setdefault('facets', set())
+        session.metadata.setdefault('decisions', [])
+        session.metadata.setdefault('tradeoffs', [])
+        session.metadata.setdefault('implementation_notes', [])
+        session.metadata.setdefault('shadow_mode', False)
+        min_facets_for_final = 4
+        min_turns_for_final = 6
+
         while (
             turn_count < session.config.max_turns and
             datetime.now() - start_time < max_duration and
@@ -66,6 +75,15 @@ class ConversationManager:
             current_personality = session.participants[current_speaker_idx]
             
             try:
+                # Build dynamic collaboration guidance
+                guidance = self._build_turn_guidance(session, current_speaker_idx)
+                if guidance:
+                    session.messages.append(ConversationMessage(
+                        role=MessageRole.USER,
+                        content=guidance,
+                        speaker="system"
+                    ))
+
                 # Generate response with basic retry
                 response = None
                 last_error = None
@@ -83,13 +101,21 @@ class ConversationManager:
                 if response is None:
                     raise last_error or Exception("Unknown generation failure")
                 
-                # Add response to conversation
+                # Add response to conversation (apply redundancy nudge)
                 message = ConversationMessage(
                     role=MessageRole.ASSISTANT,
                     content=response,
                     speaker=current_personality.name
                 )
                 session.messages.append(message)
+
+                self._update_facets_and_metadata(session, message)
+
+                # Gate premature FINAL DESIGN: if model outputs it too early and criteria not met, convert to normal discussion
+                if self._contains_final_design(message.content):
+                    if not self._final_design_allowed(session, turn_count, min_turns_for_final, min_facets_for_final):
+                        message.content = re.sub(r'(?i)FINAL DESIGN:?','(Continuing exploration – FINAL DESIGN later)', message.content)
+
                 
                 # Inject convergence hint if nearing limits and no final design yet
                 if (
@@ -124,6 +150,7 @@ class ConversationManager:
                     # System instruction for remaining participant to emulate both roles
                     remaining_idx = 1 - current_speaker_idx
                     if remaining_idx not in disabled_speakers:
+                        session.metadata['shadow_mode'] = True
                         session.messages.append(ConversationMessage(
                             role=MessageRole.USER,
                             content=(
@@ -198,6 +225,81 @@ Begin the discussion!"""
             if msg.role == MessageRole.ASSISTANT and "final design" in msg.content.lower():
                 return True
         return False
+
+    def _contains_final_design(self, content: str) -> bool:
+        return 'final design' in content.lower()
+
+    def _final_design_allowed(self, session: ConversationSession, turn_count: int, min_turns: int, min_facets: int) -> bool:
+        facets = session.metadata.get('facets', set())
+        if len(facets) < min_facets or turn_count < min_turns:
+            return False
+        return True
+
+    def _build_turn_guidance(self, session: ConversationSession, speaker_idx: int) -> str:
+        """Construct a micro system hint to shape the next reply."""
+        assistant_msgs = [m for m in session.messages if m.role == MessageRole.ASSISTANT]
+        if not assistant_msgs:
+            return "Briefly propose an initial architectural direction. End with a question inviting critique." if session.config.tone == 'casual' else "Outline an initial architectural approach and ask a clarifying question."
+        last = assistant_msgs[-1]
+        facets = session.metadata.get('facets', set())
+        needed_facets = [f for f in ['storage','security','scalability','observability','data','api','deployment'] if f not in facets]
+        prompt_bits = []
+        # Encourage acknowledgement
+        prompt_bits.append("Acknowledge one concrete prior point")
+        # Encourage covering missing facet
+        if needed_facets:
+            prompt_bits.append(f"Introduce or deepen: {needed_facets[0]}")
+        # If shadow mode, emulate other perspective
+        if session.metadata.get('shadow_mode'):
+            prompt_bits.append("Also briefly simulate what the missing persona might challenge")
+        # Question or convergence
+        if self._has_final_design_block(session):
+            return ""  # no extra guidance after final
+        if len(assistant_msgs) < max(4, (session.config.max_turns//2)):
+            prompt_bits.append("End with an open question")
+        else:
+            prompt_bits.append("If coverage feels sufficient, move toward drafting FINAL DESIGN soon")
+        if session.config.tone == 'casual':
+            prompt_bits.append("Keep tone conversational, a bit informal")
+        return "Guidance: " + "; ".join(prompt_bits)
+
+    def _update_facets_and_metadata(self, session: ConversationSession, message: ConversationMessage):
+        text = message.content.lower()
+        facets = session.metadata.get('facets', set())
+        facet_map = {
+            'storage': ['database','s3','store','schema','data lake','cache'],
+            'security': ['encrypt','auth','iam','security','zero trust','acl','kms'],
+            'scalability': ['scale','autoscale','throughput','latency','shard','partition'],
+            'observability': ['logging','metrics','tracing','otel','monitor','alert'],
+            'deployment': ['ci/cd','deploy','pipeline','terraform','infrastructure','iac'],
+            'api': ['api','rest','graphql','endpoint','gateway'],
+            'data': ['data model','schema','entity','event','stream']
+        }
+        for facet, keywords in facet_map.items():
+            if any(k in text for k in keywords):
+                facets.add(facet)
+        session.metadata['facets'] = facets
+        # Simple extraction rules
+        if 'final design' in text:
+            # Extract bullet/numbered style lines after final design
+            lines = [l.strip('- *0123456789. ') for l in message.content.splitlines() if l.strip()]
+            for l in lines:
+                if len(l) < 8:
+                    continue
+                if any(w in l.lower() for w in ['use ','we will','choose','select','decid','architecture','component']):
+                    self._append_unique(session.metadata['decisions'], l)
+        # Implementation notes heuristics
+        if any(w in text for w in ['first','then','next','finally']):
+            snippet = message.content[:180]
+            self._append_unique(session.metadata['implementation_notes'], snippet)
+        # Trade-off simple detection
+        if any(w in text for w in ['however','trade-off','tradeoff','but ','versus','vs.']):
+            snippet = message.content[:180]
+            self._append_unique(session.metadata['tradeoffs'], snippet)
+
+    def _append_unique(self, lst, item):
+        if item not in lst and len(lst) < 50:
+            lst.append(item)
 
     def _is_conversation_complete(self, session: ConversationSession) -> bool:
         """Check if the conversation has reached a natural conclusion."""

@@ -3,6 +3,7 @@
 import os
 import json
 import subprocess
+import shutil
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -53,17 +54,7 @@ class ProjectStorage:
             mermaid_file = project_path / "diagram.mmd"
             with open(mermaid_file, 'w', encoding='utf-8') as f:
                 f.write(design_doc.mermaid_diagram)
-            # Attempt PNG rendering (optional)
-            try:
-                # Use mermaid-cli if available to produce SVG and PNG
-                subprocess.run([
-                    'mmdc', '-i', str(mermaid_file), '-o', str(project_path / 'diagram.svg'), '--quiet'
-                ], check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                subprocess.run([
-                    'mmdc', '-i', str(mermaid_file), '-o', str(project_path / 'diagram.png'), '--quiet'
-                ], check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            except Exception:
-                pass
+            self._render_mermaid_assets(mermaid_file, project_path)
         
         return str(md_file)
     
@@ -185,3 +176,65 @@ class ProjectStorage:
                         continue
         
         return sorted(projects, key=lambda x: x['created'], reverse=True)
+
+    # --- Internal helpers ---
+    def _render_mermaid_assets(self, mermaid_file: Path, project_path: Path):
+        """Attempt to render Mermaid diagram to SVG and PNG with multiple strategies.
+
+        Strategies (in order):
+          1. MERMAID_CLI_COMMAND env override (e.g. "npx -y @mermaid-js/mermaid-cli")
+          2. mmdc on PATH (global install)
+          3. npx -y @mermaid-js/mermaid-cli
+        Writes a log file diagram_render.log with details on failures.
+        """
+        log_file = project_path / 'diagram_render.log'
+        attempts = []
+        svg_out = project_path / 'diagram.svg'
+        png_out = project_path / 'diagram.png'
+
+        def run_cmd(cmd, label):
+            attempts.append(label)
+            try:
+                proc = subprocess.run(cmd, capture_output=True, text=True, check=False)
+                success = proc.returncode == 0 and svg_out.exists()
+                with open(log_file, 'a', encoding='utf-8') as lf:
+                    lf.write(f"[{label}] returncode={proc.returncode}\n")
+                    if proc.stdout:
+                        lf.write(f"stdout:\n{proc.stdout[:500]}\n")
+                    if proc.stderr:
+                        lf.write(f"stderr:\n{proc.stderr[:500]}\n")
+                return success
+            except Exception as e:
+                with open(log_file, 'a', encoding='utf-8') as lf:
+                    lf.write(f"[{label}] exception: {e}\n")
+                return False
+
+        env_override = os.getenv('MERMAID_CLI_COMMAND')
+        if env_override:
+            # Split simple commands; if complex, user can provide full quoted string (basic split here)
+            cmd = env_override.split() + ['-i', str(mermaid_file), '-o', str(svg_out), '--quiet']
+            run_cmd(cmd, 'env_override_svg')
+            cmd = env_override.split() + ['-i', str(mermaid_file), '-o', str(png_out), '--quiet']
+            run_cmd(cmd, 'env_override_png')
+            if svg_out.exists() and png_out.exists():
+                return
+
+        # Strategy 2: direct mmdc if present
+        if shutil.which('mmdc'):
+            run_cmd(['mmdc', '-i', str(mermaid_file), '-o', str(svg_out), '--quiet'], 'mmdc_svg')
+            run_cmd(['mmdc', '-i', str(mermaid_file), '-o', str(png_out), '--quiet'], 'mmdc_png')
+            if svg_out.exists() and png_out.exists():
+                return
+
+        # Strategy 3: npx invocation (will download if necessary)
+        if shutil.which('npx'):
+            run_cmd(['npx', '-y', '@mermaid-js/mermaid-cli', '-i', str(mermaid_file), '-o', str(svg_out), '--quiet'], 'npx_svg')
+            run_cmd(['npx', '-y', '@mermaid-js/mermaid-cli', '-i', str(mermaid_file), '-o', str(png_out), '--quiet'], 'npx_png')
+
+        # If still missing, append summary
+        if not svg_out.exists():
+            with open(log_file, 'a', encoding='utf-8') as lf:
+                lf.write("SVG generation failed after attempts: " + ', '.join(attempts) + "\n")
+        if not png_out.exists():
+            with open(log_file, 'a', encoding='utf-8') as lf:
+                lf.write("PNG generation failed after attempts: " + ', '.join(attempts) + "\n")

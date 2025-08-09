@@ -47,6 +47,7 @@ class ConversationConfig(BaseModel):
     topic: str
     context: Optional[str] = None
     success_criteria: List[str] = Field(default_factory=list)
+    tone: Optional[str] = Field(default=None, description="Stylistic tone guidance (e.g., 'casual')")
 
 
 class DesignDocument(BaseModel):
@@ -74,3 +75,4 @@ class ConversationSession(BaseModel):
     design_document: Optional[DesignDocument] = None
     status: str = "active"  # active, completed, timeout, error
     error_message: Optional[str] = None  # captured error detail if status=error
+    metadata: Dict[str, Any] = Field(default_factory=dict)  # runtime accumulation (facets, decisions, etc.)

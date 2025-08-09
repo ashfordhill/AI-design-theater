@@ -28,7 +28,8 @@ class AIDesignTheater:
         topic: str,
         context: Optional[str] = None,
         max_turns: Optional[int] = None,
-        max_duration_minutes: Optional[int] = None
+    max_duration_minutes: Optional[int] = None,
+    tone: Optional[str] = None
     ) -> str:
         """Run a complete design session and return the project directory path."""
         
@@ -41,7 +42,8 @@ class AIDesignTheater:
             topic=topic,
             context=context,
             max_turns=max_turns or config.default_max_turns,
-            max_duration_minutes=max_duration_minutes or config.default_max_duration_minutes
+            max_duration_minutes=max_duration_minutes or config.default_max_duration_minutes,
+            tone=tone
         )
         
         # Get personalities
@@ -71,6 +73,19 @@ class AIDesignTheater:
         # Analyze conversation and generate design document
         print("📝 Analyzing conversation and generating design document...")
         design_doc = self.conversation_analyzer.extract_design_document(session)
+        # Integrate enriched metadata if present (decisions, tradeoffs, notes)
+        md = session.metadata or {}
+        if md.get('decisions') and not design_doc.key_decisions:
+            design_doc.key_decisions = md['decisions'][:10]
+        if md.get('tradeoffs') and not design_doc.trade_offs:
+            design_doc.trade_offs = md['tradeoffs'][:8]
+        if md.get('implementation_notes'):
+            # Merge unique
+            existing = set(design_doc.implementation_notes)
+            for n in md['implementation_notes']:
+                if n not in existing:
+                    design_doc.implementation_notes.append(n)
+                    existing.add(n)
         
         # Generate Mermaid diagram
         print("📊 Generating architecture diagram...")

@@ -24,6 +24,7 @@ def run(
     context: Optional[str] = typer.Option(None, "--context", "-c", help="Additional context for the discussion"),
     max_turns: Optional[int] = typer.Option(None, "--max-turns", "-t", help="Maximum number of conversation turns"),
     max_duration: Optional[int] = typer.Option(None, "--max-duration", "-d", help="Maximum duration in minutes"),
+    tone: Optional[str] = typer.Option(None, "--tone", help="Stylistic tone (e.g., casual, formal)"),
 ):
     """Run a design conversation between AI personalities."""
     
@@ -42,7 +43,8 @@ def run(
                     topic=topic,
                     context=context,
                     max_turns=max_turns,
-                    max_duration_minutes=max_duration
+                    max_duration_minutes=max_duration,
+                    tone=tone
                 )
                 
                 progress.update(task, description="✅ Session complete!")
