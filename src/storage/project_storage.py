@@ -283,8 +283,8 @@ class ProjectStorage:
                             if candidate.exists():
                                 candidates.append(candidate)
                 for c in candidates[:1]:  # first match
-                    run_cmd([node_path, str(c), '-i', str(mermaid_file), '-o', str(svg_out), '--quiet'], 'node_direct_svg')
-                    run_cmd([node_path, str(c), '-i', str(mermaid_file), '-o', str(png_out), '--quiet'], 'node_direct_png')
+                    run_cmd([node_path, str(c), '-i', str(mermaid_file), '-o', str(svg_out), '--quiet', *pptr_args], 'node_direct_svg')
+                    run_cmd([node_path, str(c), '-i', str(mermaid_file), '-o', str(png_out), '--quiet', *pptr_args], 'node_direct_png')
                     if svg_out.exists():
                         break
 
