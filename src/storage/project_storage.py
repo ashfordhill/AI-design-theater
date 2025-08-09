@@ -219,13 +219,20 @@ class ProjectStorage:
         pptr_args = []
         if no_sandbox:
             try:
-                pptr_config = project_path / 'puppeteer.config.cjs'
+                # mermaid-cli expects JSON here (CommonJS module caused JSON parse error in CI)
+                pptr_config = project_path / 'puppeteer.config.json'
                 if not pptr_config.exists():
                     pptr_config.write_text(
-                        "module.exports = { args: ['--no-sandbox','--disable-setuid-sandbox','--disable-dev-shm-usage'] };\n",
+                        json.dumps({
+                            "args": [
+                                "--no-sandbox",
+                                "--disable-setuid-sandbox",
+                                "--disable-dev-shm-usage"
+                            ]
+                        }),
                         encoding='utf-8'
                     )
-                # mmdc / mermaid-cli use -p or --puppeteerConfigFile
+                # mmdc / mermaid-cli use -p / --puppeteerConfigFile to point to JSON
                 pptr_args = ['-p', str(pptr_config)]
             except Exception as e:
                 with open(log_file, 'a', encoding='utf-8') as lf:

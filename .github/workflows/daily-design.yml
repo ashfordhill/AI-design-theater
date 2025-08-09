@@ -106,11 +106,9 @@ jobs:
         if [ ! -f "$latest/diagram.mmd" ]; then
           echo "No diagram.mmd file to render"; exit 0; fi
         echo "Attempting fallback rendering via npx mermaid-cli (no-sandbox)";
-        cat > "$latest/puppeteer.config.cjs" <<'EOF'
-        module.exports = { args: ['--no-sandbox','--disable-setuid-sandbox','--disable-dev-shm-usage'] };
-        EOF
-        npx -y @mermaid-js/mermaid-cli -i "$latest/diagram.mmd" -o "$latest/diagram.svg" -p "$latest/puppeteer.config.cjs" || true
-        npx -y @mermaid-js/mermaid-cli -i "$latest/diagram.mmd" -o "$latest/diagram.png" -p "$latest/puppeteer.config.cjs" || true
+        echo '{"args":["--no-sandbox","--disable-setuid-sandbox","--disable-dev-shm-usage"]}' > "$latest/puppeteer.config.json"
+        npx -y @mermaid-js/mermaid-cli -i "$latest/diagram.mmd" -o "$latest/diagram.svg" -p "$latest/puppeteer.config.json" || true
+        npx -y @mermaid-js/mermaid-cli -i "$latest/diagram.mmd" -o "$latest/diagram.png" -p "$latest/puppeteer.config.json" || true
         if [ -f "$latest/diagram.svg" ]; then
           echo "Fallback render succeeded."; else echo "Fallback render failed."; fi
 
