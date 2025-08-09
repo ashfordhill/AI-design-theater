@@ -28,3 +28,16 @@ Automatically generated list of all projects.
     A2 --> A3
     A3 --> A4
 ```
+
+### 2025-08-09 05:02:27.083418 — Design a distributed caching system
+- Folder: `projects/20250809_050122_Design_a_distributed_caching_system`
+- Design: [DESIGN.md](projects/20250809_050122_Design_a_distributed_caching_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20250809_050122_Design_a_distributed_caching_system/diagram.mmd) | Conversation: [conversation.md](projects/20250809_050122_Design_a_distributed_caching_system/conversation.md)
+```mermaidflowchart TD
+    A1[Start]
+    A2[Process]
+    A3{Decision}
+    A4[End]
+    A1 --> A2
+    A2 --> A3
+    A3 --> A4
+```
