@@ -1,0 +1,1 @@
+# AI Design Theater - Where AI personalities collaborate on software design

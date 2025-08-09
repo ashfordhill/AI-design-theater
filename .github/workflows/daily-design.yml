@@ -1,0 +1,146 @@
+name: Daily AI Design Session
+
+on:
+  schedule:
+    # Run every day at 9:00 AM UTC (adjust timezone as needed)
+    - cron: '0 9 * * *'
+  workflow_dispatch:  # Allow manual triggering
+    inputs:
+      topic:
+        description: 'Custom design topic (optional)'
+        required: false
+        type: string
+      context:
+        description: 'Additional context (optional)'
+        required: false
+        type: string
+      mode:
+        description: 'Topic source: daily (default) or random'
+        required: false
+        default: 'daily'
+        type: choice
+        options: [daily, random]
+
+jobs:
+  generate-design:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        npm install -g @mermaid-js/mermaid-cli
+    
+    - name: Generate design topic
+      id: topic
+      env:
+        TOPIC_MODE: ${{ github.event.inputs.mode }}
+      run: |
+        set -e
+        if [ -n "${{ github.event.inputs.topic }}" ]; then
+          echo "Using manually provided topic"
+          echo "topic=${{ github.event.inputs.topic }}" >> $GITHUB_OUTPUT
+          echo "context=${{ github.event.inputs.context }}" >> $GITHUB_OUTPUT
+        else
+          echo "Generating topic via application TopicGenerator (mode: ${TOPIC_MODE:-daily})"
+          python -c "from src.idea_generation.topic_generator import TopicGenerator; import os; m=os.environ.get('TOPIC_MODE','daily').strip().lower(); tg=TopicGenerator(); d=tg.get_random_topic() if m=='random' else tg.get_daily_topic(); topic=d['topic']; context=d.get('context','') or ''; print('Topic:', topic); print('Context:', context); open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8').write(f'topic={topic}\\ncontext={context}\\n')"
+        fi
+    
+    - name: Run AI Design Session
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      run: |
+        python cli.py run "${{ steps.topic.outputs.topic }}" \
+          --context "${{ steps.topic.outputs.context }}" \
+          --max-turns 25 \
+          --max-duration 45
+
+    - name: Update docs (README & PROJECTS_INDEX)
+      run: |
+        python scripts/update_docs.py
+    
+    - name: Commit and push results
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "AI Design Theater Bot"
+        git add projects/ README.md PROJECTS_INDEX.md
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          commit_msg="🎭 Daily AI Design: ${{ steps.topic.outputs.topic }}"
+          git commit -m "$commit_msg"
+          git push
+        fi
+
+    - name: Create issue with design summary
+      if: success()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          
+          // Find the latest project directory
+          const projectsDir = 'projects';
+          const projects = fs.readdirSync(projectsDir)
+            .filter(name => fs.statSync(path.join(projectsDir, name)).isDirectory())
+            .sort()
+            .reverse();
+          
+          if (projects.length === 0) {
+            console.log('No projects found');
+            return;
+          }
+          
+          const latestProject = projects[0];
+          const projectPath = path.join(projectsDir, latestProject);
+          
+          // Read the design document
+          const designPath = path.join(projectPath, 'DESIGN.md');
+          let designContent = '';
+          
+          if (fs.existsSync(designPath)) {
+            designContent = fs.readFileSync(designPath, 'utf8');
+          }
+          
+          // Create issue
+          const issueTitle = `🎭 Daily Design: ${{ steps.topic.outputs.topic }}`;
+          const issueBody = `
+          ## Today's AI Design Session
+          
+          **Topic:** ${{ steps.topic.outputs.topic }}
+          **Context:** ${{ steps.topic.outputs.context }}
+          **Project Directory:** \`${latestProject}\`
+          
+          ### Design Summary
+          
+          ${designContent.substring(0, 2000)}${designContent.length > 2000 ? '\n\n... (truncated)' : ''}
+          
+          ### Files Generated
+          - 📄 [Design Document](/${projectPath}/DESIGN.md)
+          - 💬 [Conversation Transcript](/${projectPath}/conversation.md)
+          - 📊 [Mermaid Diagram](/${projectPath}/diagram.mmd)
+          
+          ---
+          *Generated automatically by AI Design Theater*
+          `;
+          
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: issueTitle,
+            body: issueBody,
+            labels: ['ai-design', 'daily-session']
+          });

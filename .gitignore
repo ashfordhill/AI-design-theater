@@ -205,3 +205,11 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# AI Design Theater specific
+web_output/
+*.tmp
+temp_*
+
+# Keep projects directory structure but ignore sensitive content if needed
+# projects/*/session.json  # Uncomment if you want to exclude raw session data
