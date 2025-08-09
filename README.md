@@ -2,21 +2,13 @@
 
 <!-- LATEST_DAILY_START -->
 > ## 🌅 Latest Daily Design
-> **Topic:** Design a distributed caching system
-> **Created:** 2025-08-09 05:02:27.083418
-> **Project:** 20250809_050122_Design_a_distributed_caching_system
+> **Topic:** Design a content delivery network architecture
+> **Created:** 2025-08-09 05:08:28.318125
+> **Project:** 20250809_050726_Design_a_content_delivery_network_architecture
 >
-> ```mermaidflowchart TD
->     A1[Start]
->     A2[Process]
->     A3{Decision}
->     A4[End]
->     A1 --> A2
->     A2 --> A3
->     A3 --> A4
-> ```
+> ![Diagram](projects/20250809_050726_Design_a_content_delivery_network_architecture/diagram.svg)
 >
-> View full: projects/20250809_050122_Design_a_distributed_caching_system
+> View full: projects/20250809_050726_Design_a_content_delivery_network_architecture
 <!-- LATEST_DAILY_END -->
 
 Where AI personalities collaborate on software design! Watch as a visionary "Dreamer" and a pragmatic "Cost Cutter" engage in thoughtful dialogue to create balanced, well-reasoned software designs.

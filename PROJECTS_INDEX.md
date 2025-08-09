@@ -41,3 +41,8 @@ Automatically generated list of all projects.
     A2 --> A3
     A3 --> A4
 ```
+
+### 2025-08-09 05:08:28.318125 — Design a content delivery network architecture
+- Folder: `projects/20250809_050726_Design_a_content_delivery_network_architecture`
+- Design: [DESIGN.md](projects/20250809_050726_Design_a_content_delivery_network_architecture/DESIGN.md) | Diagram: [diagram.mmd](projects/20250809_050726_Design_a_content_delivery_network_architecture/diagram.mmd) | SVG: [diagram.svg](projects/20250809_050726_Design_a_content_delivery_network_architecture/diagram.svg) | PNG: [diagram.png](projects/20250809_050726_Design_a_content_delivery_network_architecture/diagram.png) | Conversation: [conversation.md](projects/20250809_050726_Design_a_content_delivery_network_architecture/conversation.md)
+![Diagram](projects/20250809_050726_Design_a_content_delivery_network_architecture/diagram.svg)
