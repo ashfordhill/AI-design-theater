@@ -210,32 +210,53 @@ class ProjectStorage:
                     lf.write(f"[{label}] exception: {e}\n")
                 return False
 
+        # Prepare optional Puppeteer no-sandbox configuration (helps on some hardened CI images)
+        no_sandbox = (
+            os.getenv('MERMAID_NO_SANDBOX', '').lower() in ('1', 'true', 'yes') or
+            os.getenv('GITHUB_ACTIONS', '').lower() == 'true'
+        )
+        pptr_config = None
+        pptr_args = []
+        if no_sandbox:
+            try:
+                pptr_config = project_path / 'puppeteer.config.cjs'
+                if not pptr_config.exists():
+                    pptr_config.write_text(
+                        "module.exports = { args: ['--no-sandbox','--disable-setuid-sandbox','--disable-dev-shm-usage'] };\n",
+                        encoding='utf-8'
+                    )
+                # mmdc / mermaid-cli use -p or --puppeteerConfigFile
+                pptr_args = ['-p', str(pptr_config)]
+            except Exception as e:
+                with open(log_file, 'a', encoding='utf-8') as lf:
+                    lf.write(f"[puppeteer_config] failed to write: {e}\n")
+
         env_override = os.getenv('MERMAID_CLI_COMMAND')
         if env_override:
             # Split simple commands; if complex, user can provide full quoted string (basic split here)
-            cmd = env_override.split() + ['-i', str(mermaid_file), '-o', str(svg_out), '--quiet']
+            cmd = env_override.split() + ['-i', str(mermaid_file), '-o', str(svg_out), '--quiet'] + pptr_args
             run_cmd(cmd, 'env_override_svg')
-            cmd = env_override.split() + ['-i', str(mermaid_file), '-o', str(png_out), '--quiet']
+            cmd = env_override.split() + ['-i', str(mermaid_file), '-o', str(png_out), '--quiet'] + pptr_args
             run_cmd(cmd, 'env_override_png')
             if svg_out.exists() and png_out.exists():
                 return
 
         # Strategy 2: direct mmdc if present
         if shutil.which('mmdc'):
-            run_cmd(['mmdc', '-i', str(mermaid_file), '-o', str(svg_out), '--quiet'], 'mmdc_svg')
-            run_cmd(['mmdc', '-i', str(mermaid_file), '-o', str(png_out), '--quiet'], 'mmdc_png')
+            run_cmd(['mmdc', '-i', str(mermaid_file), '-o', str(svg_out), '--quiet', *pptr_args], 'mmdc_svg')
+            run_cmd(['mmdc', '-i', str(mermaid_file), '-o', str(png_out), '--quiet', *pptr_args], 'mmdc_png')
             if svg_out.exists() and png_out.exists():
                 return
 
         # Strategy 3: npx invocation (will download if necessary)
         if shutil.which('npx'):
-            run_cmd(['npx', '-y', '@mermaid-js/mermaid-cli', '-i', str(mermaid_file), '-o', str(svg_out), '--quiet'], 'npx_svg')
-            run_cmd(['npx', '-y', '@mermaid-js/mermaid-cli', '-i', str(mermaid_file), '-o', str(png_out), '--quiet'], 'npx_png')
+            run_cmd(['npx', '-y', '@mermaid-js/mermaid-cli', '-i', str(mermaid_file), '-o', str(svg_out), '--quiet', *pptr_args], 'npx_svg')
+            run_cmd(['npx', '-y', '@mermaid-js/mermaid-cli', '-i', str(mermaid_file), '-o', str(png_out), '--quiet', *pptr_args], 'npx_png')
 
         # Strategy 4: direct 'mermaid' binary (newer CLI exposes this) if present
         if not svg_out.exists() and shutil.which('mermaid'):
-            run_cmd(['mermaid', '-i', str(mermaid_file), '-o', str(svg_out)], 'mermaid_bin_svg')
-            run_cmd(['mermaid', '-i', str(mermaid_file), '-o', str(png_out)], 'mermaid_bin_png')
+            run_cmd(['mermaid', '-i', str(mermaid_file), '-o', str(svg_out), *pptr_args], 'mermaid_bin_svg')
+            run_cmd(['mermaid', '-i', str(mermaid_file), '-o', str(png_out), *pptr_args], 'mermaid_bin_png')
 
         # Strategy 5: direct node module execution if node present but above failed
         if not svg_out.exists():
