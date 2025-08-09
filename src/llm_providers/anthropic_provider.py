@@ -34,7 +34,18 @@ class AnthropicProvider(BaseLLMProvider):
                 temperature=personality.temperature,
                 max_tokens=personality.max_tokens or 4000
             )
-            return response.content[0].text.strip()
+            # Defensive: Anthropic may return empty content array on some error edge cases
+            try:
+                if not getattr(response, 'content', None):
+                    raise ValueError("Empty response content from Anthropic API")
+                first = response.content[0]
+                # Some SDK variants wrap text differently
+                text = getattr(first, 'text', None) or getattr(first, 'value', None)
+                if not text:
+                    raise ValueError("No text field in first content block")
+                return text.strip()
+            except Exception as inner:
+                raise Exception(f"Anthropic API malformed response: {inner}")
         except Exception as e:
             raise Exception(f"Anthropic API error: {str(e)}")
     
