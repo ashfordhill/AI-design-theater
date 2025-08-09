@@ -46,3 +46,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250809_050726_Design_a_content_delivery_network_architecture`
 - Design: [DESIGN.md](projects/20250809_050726_Design_a_content_delivery_network_architecture/DESIGN.md) | Diagram: [diagram.mmd](projects/20250809_050726_Design_a_content_delivery_network_architecture/diagram.mmd) | SVG: [diagram.svg](projects/20250809_050726_Design_a_content_delivery_network_architecture/diagram.svg) | PNG: [diagram.png](projects/20250809_050726_Design_a_content_delivery_network_architecture/diagram.png) | Conversation: [conversation.md](projects/20250809_050726_Design_a_content_delivery_network_architecture/conversation.md)
 ![Diagram](projects/20250809_050726_Design_a_content_delivery_network_architecture/diagram.svg)
+
+
+### 2025-08-09 09:07:57.383672 — Design a secure multi-tenant SaaS platform
+- Folder: `projects/20250809_090644_Design_a_secure_multi-tenant_SaaS_platform`
+- Design: [DESIGN.md](projects/20250809_090644_Design_a_secure_multi-tenant_SaaS_platform/DESIGN.md) | Diagram: [diagram.mmd](projects/20250809_090644_Design_a_secure_multi-tenant_SaaS_platform/diagram.mmd) | SVG: [diagram.svg](projects/20250809_090644_Design_a_secure_multi-tenant_SaaS_platform/diagram.svg) | PNG: [diagram.png](projects/20250809_090644_Design_a_secure_multi-tenant_SaaS_platform/diagram.png) | Conversation: [conversation.md](projects/20250809_090644_Design_a_secure_multi-tenant_SaaS_platform/conversation.md)
+![Diagram](projects/20250809_090644_Design_a_secure_multi-tenant_SaaS_platform/diagram.svg)
