@@ -2,13 +2,13 @@
 
 <!-- LATEST_DAILY_START -->
 > ## 🌅 Latest Daily Design
-> **Topic:** Create a real-time fraud detection system
-> **Created:** 2025-08-10 09:07:46.078485
-> **Project:** 20250810_090638_Create_a_real-time_fraud_detection_system
+> **Topic:** Design a distributed caching system
+> **Created:** 2025-08-11 09:11:05.856146
+> **Project:** 20250811_090951_Design_a_distributed_caching_system
 >
-> ![Diagram](projects/20250810_090638_Create_a_real-time_fraud_detection_system/diagram.svg)
+> ![Diagram](projects/20250811_090951_Design_a_distributed_caching_system/diagram.svg)
 >
-> View full: projects/20250810_090638_Create_a_real-time_fraud_detection_system
+> View full: projects/20250811_090951_Design_a_distributed_caching_system
 <!-- LATEST_DAILY_END -->
 
 Where AI personalities collaborate on software design! Watch as a visionary "Dreamer" and a pragmatic "Cost Cutter" engage in thoughtful dialogue to create balanced, well-reasoned software designs.

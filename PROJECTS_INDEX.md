@@ -58,3 +58,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250810_090638_Create_a_real-time_fraud_detection_system`
 - Design: [DESIGN.md](projects/20250810_090638_Create_a_real-time_fraud_detection_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20250810_090638_Create_a_real-time_fraud_detection_system/diagram.mmd) | SVG: [diagram.svg](projects/20250810_090638_Create_a_real-time_fraud_detection_system/diagram.svg) | PNG: [diagram.png](projects/20250810_090638_Create_a_real-time_fraud_detection_system/diagram.png) | Conversation: [conversation.md](projects/20250810_090638_Create_a_real-time_fraud_detection_system/conversation.md)
 ![Diagram](projects/20250810_090638_Create_a_real-time_fraud_detection_system/diagram.svg)
+
+
+### 2025-08-11 09:11:05.856146 — Design a distributed caching system
+- Folder: `projects/20250811_090951_Design_a_distributed_caching_system`
+- Design: [DESIGN.md](projects/20250811_090951_Design_a_distributed_caching_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20250811_090951_Design_a_distributed_caching_system/diagram.mmd) | SVG: [diagram.svg](projects/20250811_090951_Design_a_distributed_caching_system/diagram.svg) | PNG: [diagram.png](projects/20250811_090951_Design_a_distributed_caching_system/diagram.png) | Conversation: [conversation.md](projects/20250811_090951_Design_a_distributed_caching_system/conversation.md)
+![Diagram](projects/20250811_090951_Design_a_distributed_caching_system/diagram.svg)
