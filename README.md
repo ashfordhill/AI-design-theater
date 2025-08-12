@@ -2,13 +2,13 @@
 
 <!-- LATEST_DAILY_START -->
 > ## 🌅 Latest Daily Design
-> **Topic:** Design a distributed caching system
-> **Created:** 2025-08-11 09:11:05.856146
-> **Project:** 20250811_090951_Design_a_distributed_caching_system
+> **Topic:** Build a GraphQL API gateway
+> **Created:** 2025-08-12 09:09:17.249841
+> **Project:** 20250812_090814_Build_a_GraphQL_API_gateway
 >
-> ![Diagram](projects/20250811_090951_Design_a_distributed_caching_system/diagram.svg)
+> ![Diagram](projects/20250812_090814_Build_a_GraphQL_API_gateway/diagram.svg)
 >
-> View full: projects/20250811_090951_Design_a_distributed_caching_system
+> View full: projects/20250812_090814_Build_a_GraphQL_API_gateway
 <!-- LATEST_DAILY_END -->
 
 Where AI personalities collaborate on software design! Watch as a visionary "Dreamer" and a pragmatic "Cost Cutter" engage in thoughtful dialogue to create balanced, well-reasoned software designs.
