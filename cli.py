@@ -12,6 +12,7 @@ from typing import Optional
 from src.main import AIDesignTheater
 from web_viewer import ConversationWebViewer
 from src.idea_generation.topic_generator import TopicGenerator
+from src.storage.project_storage import ProjectStorage
 from src.config import config
 
 app = typer.Typer(help="AI Design Theater - Where AI personalities collaborate on software design")
@@ -203,7 +204,8 @@ def example():
         "[bold]Other Commands:[/bold]\n"
         "python cli.py list          # List all projects\n"
         "python cli.py validate      # Check setup\n"
-        "python cli.py web          # Generate web viewer\n\n"
+        "python cli.py web          # Generate web viewer\n"
+        "python cli.py readme --all  # Regenerate all READMEs\n\n"
         "[bold]Example Topics:[/bold]\n"
         "• \"Design a real-time chat application\"\n"
         "• \"Create a CI/CD pipeline for a Python web app\"\n"
@@ -241,6 +243,55 @@ def daily_topic(keywords: Optional[str] = typer.Option(None, "--keywords", help=
     context = topic_data.get('context')
     console.print(f"[cyan]Daily Topic:[/cyan] {topic}\n[dim]{context}[/dim]")
     asyncio.run(AIDesignTheater().run_design_session(topic=topic, context=context))
+
+
+@app.command()
+def readme(
+    project_path: Optional[str] = typer.Argument(None, help="Path to specific project directory"),
+    all_projects: bool = typer.Option(False, "--all", "-a", help="Regenerate READMEs for all projects")
+):
+    """Regenerate README.md files with conversation logs and diagrams."""
+    storage = ProjectStorage()
+    
+    if all_projects:
+        console.print("[cyan]Regenerating READMEs for all projects...[/cyan]")
+        projects = storage.list_projects()
+        
+        success_count = 0
+        for project in projects:
+            if storage.regenerate_readme(project['path']):
+                console.print(f"✅ {project['name']}")
+                success_count += 1
+            else:
+                console.print(f"❌ {project['name']} (failed)")
+        
+        console.print(f"\n[green]Successfully regenerated {success_count}/{len(projects)} READMEs[/green]")
+    
+    elif project_path:
+        console.print(f"[cyan]Regenerating README for {project_path}...[/cyan]")
+        if storage.regenerate_readme(project_path):
+            console.print("✅ README generated successfully!")
+        else:
+            console.print("❌ Failed to generate README")
+    
+    else:
+        # Show available projects
+        projects = storage.list_projects()
+        if not projects:
+            console.print("[yellow]No projects found.[/yellow]")
+            return
+        
+        console.print("[cyan]Available projects:[/cyan]")
+        table = Table()
+        table.add_column("Name", style="cyan")
+        table.add_column("Topic", style="white")
+        table.add_column("Path", style="dim")
+        
+        for project in projects:
+            table.add_row(project['name'], project['topic'], project['path'])
+        
+        console.print(table)
+        console.print("\n[dim]Use: python cli.py readme <project_path> or python cli.py readme --all[/dim]")
 
 
 if __name__ == "__main__":

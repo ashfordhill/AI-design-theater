@@ -56,6 +56,9 @@ class ProjectStorage:
                 f.write(design_doc.mermaid_diagram)
             self._render_mermaid_assets(mermaid_file, project_path)
         
+        # Generate README with conversation logs
+        self._generate_readme(design_doc, project_path)
+        
         return str(md_file)
     
     def _save_conversation_transcript(self, session: ConversationSession, file_path: Path):
@@ -143,6 +146,109 @@ class ProjectStorage:
             f.write("## Conversation Summary\n\n")
             f.write(f"{design_doc.conversation_summary}\n")
     
+    def _generate_readme(self, design_doc: DesignDocument, project_path: Path):
+        """Generate a README.md file with diagram and conversation logs."""
+        readme_file = project_path / "README.md"
+        
+        with open(readme_file, 'w', encoding='utf-8') as f:
+            # Header
+            f.write(f"# {design_doc.title}\n\n")
+            f.write(f"{design_doc.description}\n\n")
+            
+            # Architecture diagram
+            f.write("## Architecture Overview\n\n")
+            
+            # Check if PNG exists, fallback to SVG, then to mermaid code
+            png_file = project_path / "diagram.png"
+            svg_file = project_path / "diagram.svg"
+            
+            if png_file.exists():
+                f.write("![Architecture Diagram](diagram.png)\n\n")
+            elif svg_file.exists():
+                f.write("![Architecture Diagram](diagram.svg)\n\n")
+            elif design_doc.mermaid_diagram:
+                f.write("```mermaid\n")
+                f.write(design_doc.mermaid_diagram)
+                f.write("\n```\n\n")
+            
+            # Key information
+            if design_doc.key_decisions:
+                f.write("## Key Decisions\n\n")
+                for decision in design_doc.key_decisions:
+                    f.write(f"- {decision}\n")
+                f.write("\n")
+            
+            # Conversation logs
+            f.write("## Design Conversation\n\n")
+            f.write("*The following is the AI-to-AI conversation that led to this design:*\n\n")
+            
+            # Extract conversation from session.json if available
+            session_file = project_path / "session.json"
+            if session_file.exists():
+                self._add_conversation_to_readme(f, session_file)
+            else:
+                f.write("*Conversation logs not available*\n\n")
+            
+            # Footer
+            f.write("---\n\n")
+            f.write(f"*Generated on {design_doc.created_at.strftime('%Y-%m-%d %H:%M:%S')}*\n")
+    
+    def _add_conversation_to_readme(self, file_handle, session_file: Path):
+        """Add formatted conversation logs to README."""
+        try:
+            with open(session_file, 'r', encoding='utf-8') as sf:
+                session_data = json.load(sf)
+            
+            messages = session_data.get('messages', [])
+            participants = session_data.get('participants', [])
+            
+            # Create participant lookup for styling
+            participant_info = {}
+            for p in participants:
+                name = p.get('name', '')
+                provider = p.get('provider', '')
+                model = p.get('model', '')
+                participant_info[name] = {
+                    'provider': provider,
+                    'model': model,
+                    'emoji': '🤖' if provider == 'openai' else '🧠' if provider == 'anthropic' else '💭'
+                }
+            
+            file_handle.write('<div style="background-color: #f6f8fa; border-radius: 6px; padding: 16px; margin: 16px 0;">\n\n')
+            
+            for message in messages:
+                role = message.get('role', '')
+                content = message.get('content', '')
+                speaker = message.get('speaker', '')
+                
+                # Skip system prompts and referee messages
+                if role == 'user' or 'REFEREE' in content or 'System Prompt' in content:
+                    continue
+                
+                if role == 'assistant' and speaker and speaker in participant_info:
+                    info = participant_info[speaker]
+                    emoji = info['emoji']
+                    provider_model = f"{info['provider']}: {info['model']}"
+                    
+                    # Create a styled conversation bubble
+                    file_handle.write(f'<div style="margin: 12px 0; padding: 12px; border-left: 4px solid ')
+                    if info['provider'] == 'openai':
+                        file_handle.write('#10a37f')  # OpenAI green
+                    elif info['provider'] == 'anthropic':
+                        file_handle.write('#d97706')  # Anthropic orange
+                    else:
+                        file_handle.write('#6b7280')  # Default gray
+                    file_handle.write('; background-color: #ffffff; border-radius: 4px;">\n\n')
+                    
+                    file_handle.write(f'**{emoji} {speaker}** *({provider_model})*\n\n')
+                    file_handle.write(f'{content}\n\n')
+                    file_handle.write('</div>\n\n')
+            
+            file_handle.write('</div>\n\n')
+            
+        except Exception as e:
+            file_handle.write(f"*Error loading conversation: {e}*\n\n")
+    
     def _sanitize_filename(self, filename: str) -> str:
         """Sanitize a string to be safe for use as a filename."""
         # Remove or replace unsafe characters
@@ -176,6 +282,26 @@ class ProjectStorage:
                         continue
         
         return sorted(projects, key=lambda x: x['created'], reverse=True)
+    
+    def regenerate_readme(self, project_dir: str) -> bool:
+        """Regenerate README for an existing project."""
+        project_path = Path(project_dir)
+        design_file = project_path / "design_document.json"
+        
+        if not design_file.exists():
+            return False
+        
+        try:
+            with open(design_file, 'r', encoding='utf-8') as f:
+                design_data = json.load(f)
+            
+            # Convert back to DesignDocument object
+            design_doc = DesignDocument(**design_data)
+            self._generate_readme(design_doc, project_path)
+            return True
+        except Exception as e:
+            print(f"Error regenerating README: {e}")
+            return False
 
     # --- Internal helpers ---
     def _render_mermaid_assets(self, mermaid_file: Path, project_path: Path):
