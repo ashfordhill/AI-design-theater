@@ -250,50 +250,56 @@ Begin the discussion!"""
         return True
 
     def _build_turn_guidance(self, session: ConversationSession, speaker_idx: int, turn_index: int) -> str:
-        """Construct a micro system hint to shape the next reply."""
+        """Generate brutal sports referee commentary to escalate the technical fight."""
         assistant_msgs = [m for m in session.messages if m.role == MessageRole.ASSISTANT]
         if not assistant_msgs:
-            return "Briefly propose an initial architectural direction. End with a question inviting critique." if session.config.tone == 'casual' else "Outline an initial architectural approach and ask a clarifying question."
-        last = assistant_msgs[-1]
+            return "🔔 ROUND 1! Present your opening argument and throw the first technical punch!"
+        
+        # Get current speaker and opponent
+        speaker = session.participants[speaker_idx].name
+        opponent = session.participants[1 - speaker_idx].name
+        
         facets = session.metadata.get('facets', set())
         needed_facets = [f for f in ['storage','security','scalability','observability','data','api','deployment'] if f not in facets]
-        prompt_bits = []
-        # Encourage acknowledgement
-        prompt_bits.append("Acknowledge one concrete prior point (briefly)")
-        # Encourage covering missing facet
+        
+        referee_taunts = [
+            f"🥊 {speaker}! {opponent} just threw a haymaker! Counter-punch with something even more BRUTAL!",
+            f"🔥 {speaker}! {opponent} is getting cocky! DESTROY their argument and show them who's boss!",
+            f"⚡ {speaker}! {opponent} thinks they're winning! Time to unleash HELL on their pathetic suggestion!",
+            f"🚨 {speaker}! {opponent} is getting desperate! Finish them off with a DEVASTATING technical knockout!",
+            f"💀 {speaker}! {opponent} just exposed their weakness! Go for the KILL SHOT!",
+            f"🎯 {speaker}! {opponent} is bleeding! Show no mercy - ANNIHILATE their approach!",
+            f"⚔️ {speaker}! {opponent} thinks they're clever! Prove they're an AMATEUR!",
+            f"🌪️ {speaker}! {opponent} is stumbling! Hit them with a TORNADO of technical superiority!",
+            f"💣 {speaker}! {opponent} left themselves wide open! Drop a BOMBSHELL on their architecture!"
+        ]
+        
+        # Add technical focus for completeness
+        tech_demands = []
         if needed_facets:
-            prompt_bits.append(f"Introduce or deepen: {needed_facets[0]}")
-        # If shadow mode, emulate other perspective
-        if session.metadata.get('shadow_mode'):
-            prompt_bits.append("Also briefly simulate what the missing persona might challenge")
-        # Debate intensity injection
+            tech_demands.append(f"While you're at it, obliterate their {needed_facets[0]} approach too!")
+        
+        # Build the referee's aggressive commentary
+        taunt = referee_taunts[turn_index % len(referee_taunts)]
+        
+        if tech_demands:
+            taunt += f" {tech_demands[0]}"
+            
+        # Escalation based on debate intensity
         intensity = getattr(session.config, 'debate_intensity', 5)
         if intensity >= 7:
-            prompt_bits.append("Directly challenge an assumption or risky choice just raised; propose an alternative")
+            taunt += " Show absolutely NO MERCY! Their career depends on this!"
         elif intensity >= 4:
-            prompt_bits.append("Politely question a potential weakness or cost driver; suggest leaner option")
-        else:
-            prompt_bits.append("Maintain collaborative tone")
-        # Question or convergence
+            taunt += " Make them regret ever speaking!"
+        
+        # Final rounds get special treatment
         if self._has_final_design_block(session):
-            return ""  # no extra guidance after final
-        # Stance memory principle reinforcement occasionally
-        principle = None
-        try:
-            speaker_name = session.participants[speaker_idx].name
-            if turn_index % max(3, 8 - session.config.debate_intensity) == 0:
-                principle = self.stance_memory.pick_principle(speaker_name, turn_index)
-        except Exception:
-            principle = None
-        if principle:
-            prompt_bits.append(f"Reassert one guiding principle briefly: '{principle}' (do not repeat every turn)")
-        if len(assistant_msgs) < max(4, (session.config.max_turns//2)):
-            prompt_bits.append("End with an open question")
-        else:
-            prompt_bits.append("If coverage feels sufficient, move toward drafting FINAL DESIGN soon")
-        if session.config.tone == 'casual':
-            prompt_bits.append("Keep tone conversational, a bit informal")
-        return "Guidance: " + "; ".join(prompt_bits)
+            return ""  # no referee after final bell
+            
+        if len(assistant_msgs) >= max(4, (session.config.max_turns//2)):
+            taunt += " If you've got them beaten, go for the FINAL DESIGN knockout!"
+            
+        return f"🔔 REFEREE: {taunt}"
 
     def _update_facets_and_metadata(self, session: ConversationSession, message: ConversationMessage):
         text = message.content.lower()

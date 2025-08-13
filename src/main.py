@@ -4,7 +4,7 @@ import asyncio
 from typing import Optional
 from .config import config
 from .models import ConversationConfig
-from .personalities import PersonalityManager, get_dreamer_personality, get_cost_cutter_personality
+from .personalities import PersonalityManager, get_idealist_personality, get_cost_cutter_personality
 from .conversation import ConversationManager, ConversationAnalyzer
 from .diagram_generation import MermaidGenerator
 from .storage import ProjectStorage
@@ -51,9 +51,9 @@ class AIDesignTheater:
         )
         
         # Get personalities
-        dreamer = get_dreamer_personality()
+        idealist = get_idealist_personality()
         cost_cutter = get_cost_cutter_personality()
-        personalities = [dreamer, cost_cutter]
+        personalities = [idealist, cost_cutter]
         
         # Validate personalities
         for personality in personalities:
@@ -62,7 +62,7 @@ class AIDesignTheater:
         
         print(f"🎭 Starting design conversation: {topic}")
         print(
-            f"👥 Participants: {dreamer.name} [{dreamer.model}] & {cost_cutter.name} [{cost_cutter.model}]"
+            f"👥 Participants: {idealist.name} [{idealist.model}] & {cost_cutter.name} [{cost_cutter.model}]"
         )
         print(
             f"⚙️  Settings: turns≤{conv_config.max_turns}, duration≤{conv_config.max_duration_minutes}m, "
@@ -135,7 +135,7 @@ class AIDesignTheater:
 
         try:
             if config.anthropic_api_key:
-                anthropic_personality = get_dreamer_personality()
+                anthropic_personality = get_idealist_personality()
                 results["anthropic_connection"] = await self.personality_manager.validate_personality(anthropic_personality)
         except Exception:
             results["anthropic_connection"] = False

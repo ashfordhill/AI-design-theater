@@ -16,15 +16,15 @@ from datetime import datetime
 from typing import Dict, List, Any
 
 DEFAULT_PRINCIPLES: Dict[str, List[str]] = {
-    "Dreamer": [
-        "Favor bold, user-delighting capabilities even if architecture is novel",
-        "Leverage emerging technologies judiciously to unlock differentiated value",
-        "Articulate a unifying product narrative behind technical choices",
+    "Idealist": [
+        "Push revolutionary tech that transforms entire industries - mediocrity is death",
+        "Embrace bleeding-edge solutions that separate winners from losers", 
+        "Innovation requires risk - safe choices are career suicide",
     ],
     "Cost Cutter": [
-        "Prefer proven, low-operational-burden components over shiny complexity",
-        "Optimize for incremental delivery and measurable ROI",
-        "Eliminate over-engineering; default to the simplest design that can evolve",
+        "Every dollar wasted is a dollar that could save someone's job",
+        "Proven tech survives 3am disasters - fancy toys create them",
+        "Complexity is the enemy - simple solutions scale, complex ones collapse",
     ],
 }
 
