@@ -70,3 +70,64 @@ Automatically generated list of all projects.
 - Folder: `projects/20250812_090814_Build_a_GraphQL_API_gateway`
 - Design: [DESIGN.md](projects/20250812_090814_Build_a_GraphQL_API_gateway/DESIGN.md) | Diagram: [diagram.mmd](projects/20250812_090814_Build_a_GraphQL_API_gateway/diagram.mmd) | SVG: [diagram.svg](projects/20250812_090814_Build_a_GraphQL_API_gateway/diagram.svg) | PNG: [diagram.png](projects/20250812_090814_Build_a_GraphQL_API_gateway/diagram.png) | Conversation: [conversation.md](projects/20250812_090814_Build_a_GraphQL_API_gateway/conversation.md)
 ![Diagram](projects/20250812_090814_Build_a_GraphQL_API_gateway/diagram.svg)
+
+
+### 2025-08-13 03:40:42.585714 — Create a real-time collaborative code editor
+- Folder: `projects/20250813_034007_Create_a_real-time_collaborative_code_editor`
+- Design: [DESIGN.md](projects/20250813_034007_Create_a_real-time_collaborative_code_editor/DESIGN.md) | Diagram: [diagram.mmd](projects/20250813_034007_Create_a_real-time_collaborative_code_editor/diagram.mmd) | Conversation: [conversation.md](projects/20250813_034007_Create_a_real-time_collaborative_code_editor/conversation.md)
+```mermaidgraph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1((Load Balancer
+(Nginx)))
+    apiGateway[API Gateway
+(AWS API Gateway)]
+    authService[Authentication Service
+(Express.js, JWT)]
+    collabService[Collaboration Service
+(Node.js, WebSocket)]
+    editorService[Editor Service
+(React, CodeMirror)]
+    notificationService[Notification Service
+(RabbitMQ)]
+    userDB[(User Database
+(PostgreSQL))]
+    sessionDB[(Session Database
+(Redis))]
+    fileStorage[[File Storage
+(AWS S3)]]
+    analyticsService[Analytics Service
+(Apache Kafka)]
+
+    lb1 -->|HTTP traffic| apiGateway
+    apiGateway -->|Authentication requests| authService
+    apiGateway -->|Collaboration requests| collabService
+    apiGateway -->|Editor requests| editorService
+    apiGateway -->|Notification requests| notificationService
+    authService -->|User data access| userDB
+    collabService -->|Session management| sessionDB
+    collabService -->|File access| fileStorage
+    collabService -->|Send notifications| notificationService
+    collabService -->|Event logging| analyticsService
+    editorService -->|Real-time updates| collabService
+    notificationService -->|Notification delivery| collabService
+    analyticsService -->|User analytics| userDB
+
+    class lb1 userInterface
+    class apiGateway apiLayer
+    class authService service
+    class collabService service
+    class editorService service
+    class notificationService service
+    class userDB database
+    class sessionDB database
+    class fileStorage external
+    class analyticsService service
+```
