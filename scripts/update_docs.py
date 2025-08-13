@@ -1,4 +1,4 @@
-import os, re, pathlib
+import os, re, pathlib, json
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PROJECTS = ROOT / 'projects'
@@ -41,6 +41,80 @@ def load_projects():
             'mermaid': mermaid
         })
     return items
+
+def extract_conversation_logs(project_folder):
+    """Extract formatted conversation logs from a project."""
+    session_file = PROJECTS / project_folder / 'session.json'
+    if not session_file.exists():
+        return ""
+    
+    try:
+        with open(session_file, 'r', encoding='utf-8') as f:
+            session_data = json.load(f)
+        
+        messages = session_data.get('messages', [])
+        participants = session_data.get('participants', [])
+        
+        # Create participant lookup for styling
+        participant_info = {}
+        for p in participants:
+            name = p.get('name', '')
+            provider = p.get('provider', '')
+            model = p.get('model', '')
+            participant_info[name] = {
+                'provider': provider,
+                'model': model,
+                'emoji': '🤖' if provider == 'openai' else '🧠' if provider == 'anthropic' else '💭'
+            }
+        
+        conversation_lines = []
+        conversation_lines.append('> ## 💬 Design Conversation')
+        conversation_lines.append('>')
+        conversation_lines.append('> <details>')
+        conversation_lines.append('> <summary><strong>Click to view the AI-to-AI conversation that led to this design</strong></summary>')
+        conversation_lines.append('>')
+        conversation_lines.append('> <div style="background-color: #f6f8fa; border-radius: 6px; padding: 16px; margin: 16px 0;">')
+        conversation_lines.append('>')
+        
+        for message in messages:
+            role = message.get('role', '')
+            content = message.get('content', '')
+            speaker = message.get('speaker', '')
+            
+            # Skip system prompts and referee messages
+            if role == 'user' or 'REFEREE' in content or 'System Prompt' in content:
+                continue
+            
+            if role == 'assistant' and speaker and speaker in participant_info:
+                info = participant_info[speaker]
+                emoji = info['emoji']
+                provider_model = f"{info['provider']}: {info['model']}"
+                
+                # Create a styled conversation bubble
+                border_color = '#10a37f' if info['provider'] == 'openai' else '#d97706' if info['provider'] == 'anthropic' else '#6b7280'
+                
+                conversation_lines.append(f'> <div style="margin: 12px 0; padding: 12px; border-left: 4px solid {border_color}; background-color: #ffffff; border-radius: 4px;">')
+                conversation_lines.append('>')
+                conversation_lines.append(f'> **{emoji} {speaker}** *({provider_model})*')
+                conversation_lines.append('>')
+                
+                # Split content into lines and add > prefix
+                content_lines = content.split('\n')
+                for line in content_lines:
+                    conversation_lines.append(f'> {line}')
+                
+                conversation_lines.append('>')
+                conversation_lines.append('> </div>')
+                conversation_lines.append('>')
+        
+        conversation_lines.append('> </div>')
+        conversation_lines.append('>')
+        conversation_lines.append('> </details>')
+        
+        return '\n'.join(conversation_lines)
+        
+    except Exception as e:
+        return f"> *Error loading conversation: {e}*"
 
 def update_index(projects):
     lines = [
@@ -89,6 +163,9 @@ def update_readme(projects):
         diagram_section = f"> ![Diagram]({latest_png_path})"
     else:
         diagram_section = '> ' + (latest['mermaid'].replace('\n', '\n> ') if latest['mermaid'] else '_No diagram_')
+    # Get conversation logs
+    conversation_section = extract_conversation_logs(latest['folder'])
+    
     block = [
         '> ## 🌅 Latest Daily Design',
         f"> **Topic:** {latest['topic']}",
@@ -96,6 +173,8 @@ def update_readme(projects):
         f"> **Project:** {latest['folder']}",
         '>',
         diagram_section,
+        '>',
+        conversation_section,
         '>',
         f"> View full: projects/{latest['folder']}"
     ]

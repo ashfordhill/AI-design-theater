@@ -8,6 +8,7 @@ from rich.table import Table
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from typing import Optional
+from pathlib import Path
 
 from src.main import AIDesignTheater
 from web_viewer import ConversationWebViewer
@@ -205,7 +206,8 @@ def example():
         "python cli.py list          # List all projects\n"
         "python cli.py validate      # Check setup\n"
         "python cli.py web          # Generate web viewer\n"
-        "python cli.py readme --all  # Regenerate all READMEs\n\n"
+        "python cli.py readme --all  # Regenerate all READMEs\n"
+        "python cli.py update-docs   # Update main README\n\n"
         "[bold]Example Topics:[/bold]\n"
         "• \"Design a real-time chat application\"\n"
         "• \"Create a CI/CD pipeline for a Python web app\"\n"
@@ -292,6 +294,29 @@ def readme(
         
         console.print(table)
         console.print("\n[dim]Use: python cli.py readme <project_path> or python cli.py readme --all[/dim]")
+
+
+@app.command()
+def update_docs():
+    """Update the main README.md and PROJECTS_INDEX.md with latest project info."""
+    console.print("[cyan]Updating documentation...[/cyan]")
+    
+    try:
+        import subprocess
+        result = subprocess.run(
+            ["python", "scripts/update_docs.py"], 
+            capture_output=True, 
+            text=True, 
+            cwd=str(Path.cwd())
+        )
+        
+        if result.returncode == 0:
+            console.print("✅ Documentation updated successfully!")
+            console.print("[dim]Main README.md and PROJECTS_INDEX.md have been updated with the latest project.[/dim]")
+        else:
+            console.print(f"❌ Error updating documentation: {result.stderr}")
+    except Exception as e:
+        console.print(f"❌ Failed to update documentation: {e}")
 
 
 if __name__ == "__main__":
