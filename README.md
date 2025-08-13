@@ -2,68 +2,13 @@
 
 <!-- LATEST_DAILY_START -->
 > ## 🌅 Latest Daily Design
-> **Topic:** Create a real-time collaborative code editor
-> **Created:** 2025-08-13 03:40:42.585714
-> **Project:** 20250813_034007_Create_a_real-time_collaborative_code_editor
+> **Topic:** Build a real-time chat application with encryption
+> **Created:** 2025-08-13 04:25:46.804999
+> **Project:** 20250813_042429_Build_a_real-time_chat_application_with_encryption
 >
-> ```mermaidgraph TB
-> 
->     %% Professional Software Architecture Styling
->     classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
->     classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
->     classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
->     classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
->     classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
->     classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
-> 
->     lb1((Load Balancer
-> (Nginx)))
->     apiGateway[API Gateway
-> (AWS API Gateway)]
->     authService[Authentication Service
-> (Express.js, JWT)]
->     collabService[Collaboration Service
-> (Node.js, WebSocket)]
->     editorService[Editor Service
-> (React, CodeMirror)]
->     notificationService[Notification Service
-> (RabbitMQ)]
->     userDB[(User Database
-> (PostgreSQL))]
->     sessionDB[(Session Database
-> (Redis))]
->     fileStorage[[File Storage
-> (AWS S3)]]
->     analyticsService[Analytics Service
-> (Apache Kafka)]
-> 
->     lb1 -->|HTTP traffic| apiGateway
->     apiGateway -->|Authentication requests| authService
->     apiGateway -->|Collaboration requests| collabService
->     apiGateway -->|Editor requests| editorService
->     apiGateway -->|Notification requests| notificationService
->     authService -->|User data access| userDB
->     collabService -->|Session management| sessionDB
->     collabService -->|File access| fileStorage
->     collabService -->|Send notifications| notificationService
->     collabService -->|Event logging| analyticsService
->     editorService -->|Real-time updates| collabService
->     notificationService -->|Notification delivery| collabService
->     analyticsService -->|User analytics| userDB
-> 
->     class lb1 userInterface
->     class apiGateway apiLayer
->     class authService service
->     class collabService service
->     class editorService service
->     class notificationService service
->     class userDB database
->     class sessionDB database
->     class fileStorage external
->     class analyticsService service
-> ```
+> ![Diagram](projects/20250813_042429_Build_a_real-time_chat_application_with_encryption/diagram.svg)
 >
-> View full: projects/20250813_034007_Create_a_real-time_collaborative_code_editor
+> View full: projects/20250813_042429_Build_a_real-time_chat_application_with_encryption
 <!-- LATEST_DAILY_END -->
 
 Where AI personalities collaborate on software design! Watch as a visionary "Dreamer" and a pragmatic "Cost Cutter" engage in thoughtful dialogue to create balanced, well-reasoned software designs.

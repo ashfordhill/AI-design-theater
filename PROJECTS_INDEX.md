@@ -72,9 +72,9 @@ Automatically generated list of all projects.
 ![Diagram](projects/20250812_090814_Build_a_GraphQL_API_gateway/diagram.svg)
 
 
-### 2025-08-13 03:40:42.585714 — Create a real-time collaborative code editor
-- Folder: `projects/20250813_034007_Create_a_real-time_collaborative_code_editor`
-- Design: [DESIGN.md](projects/20250813_034007_Create_a_real-time_collaborative_code_editor/DESIGN.md) | Diagram: [diagram.mmd](projects/20250813_034007_Create_a_real-time_collaborative_code_editor/diagram.mmd) | Conversation: [conversation.md](projects/20250813_034007_Create_a_real-time_collaborative_code_editor/conversation.md)
+### 2025-08-12 23:15:44.213205 — Test diagram generation
+- Folder: `projects/20250812_231536_Test_diagram_generation`
+- Design: [DESIGN.md](projects/20250812_231536_Test_diagram_generation/DESIGN.md) | Diagram: [diagram.mmd](projects/20250812_231536_Test_diagram_generation/diagram.mmd) | Conversation: [conversation.md](projects/20250812_231536_Test_diagram_generation/conversation.md)
 ```mermaidgraph TB
 
     %% Professional Software Architecture Styling
@@ -85,49 +85,45 @@ Automatically generated list of all projects.
     classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
     classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
 
-    lb1((Load Balancer
-(Nginx)))
-    apiGateway[API Gateway
-(AWS API Gateway)]
-    authService[Authentication Service
-(Express.js, JWT)]
-    collabService[Collaboration Service
-(Node.js, WebSocket)]
-    editorService[Editor Service
-(React, CodeMirror)]
-    notificationService[Notification Service
-(RabbitMQ)]
-    userDB[(User Database
-(PostgreSQL))]
-    sessionDB[(Session Database
-(Redis))]
-    fileStorage[[File Storage
-(AWS S3)]]
-    analyticsService[Analytics Service
-(Apache Kafka)]
+    lb1((Load Balancer - NGINX))
+    api_gateway[API Gateway - Kong]
+    test_diagram_service[Test Diagram Generation Service - Spring Boot]
+    user_service[User Management Service - Node.js]
+    notification_service[Notification Service - RabbitMQ]
+    database[(User Data Database - PostgreSQL)]
+    cache{{(Cache Layer - Redis)}}
+    message_queue[[Message Queue - Kafka]]
+    external_api[[External Diagram API - REST]]
 
-    lb1 -->|HTTP traffic| apiGateway
-    apiGateway -->|Authentication requests| authService
-    apiGateway -->|Collaboration requests| collabService
-    apiGateway -->|Editor requests| editorService
-    apiGateway -->|Notification requests| notificationService
-    authService -->|User data access| userDB
-    collabService -->|Session management| sessionDB
-    collabService -->|File access| fileStorage
-    collabService -->|Send notifications| notificationService
-    collabService -->|Event logging| analyticsService
-    editorService -->|Real-time updates| collabService
-    notificationService -->|Notification delivery| collabService
-    analyticsService -->|User analytics| userDB
+    lb1 -->|HTTP request| api_gateway
+    api_gateway -->|HTTP request| user_service
+    api_gateway -->|HTTP request| test_diagram_service
+    user_service -->|SQL query| database
+    test_diagram_service -->|HTTP request| external_api
+    test_diagram_service -->|Message| notification_service
+    notification_service -->|Publish message| message_queue
+    message_queue -->|Consume message| user_service
+    user_service -->|Cache user data| cache
+    cache -->|Retrieve cached data| user_service
 
     class lb1 userInterface
-    class apiGateway apiLayer
-    class authService service
-    class collabService service
-    class editorService service
-    class notificationService service
-    class userDB database
-    class sessionDB database
-    class fileStorage external
-    class analyticsService service
+    class api_gateway apiLayer
+    class test_diagram_service service
+    class user_service service
+    class notification_service service
+    class database database
+    class cache cache
+    class message_queue external
+    class external_api external
 ```
+
+### 2025-08-13 03:40:42.585714 — Create a real-time collaborative code editor
+- Folder: `projects/20250813_034007_Create_a_real-time_collaborative_code_editor`
+- Design: [DESIGN.md](projects/20250813_034007_Create_a_real-time_collaborative_code_editor/DESIGN.md) | Diagram: [diagram.mmd](projects/20250813_034007_Create_a_real-time_collaborative_code_editor/diagram.mmd) | SVG: [diagram.svg](projects/20250813_034007_Create_a_real-time_collaborative_code_editor/diagram.svg) | PNG: [diagram.png](projects/20250813_034007_Create_a_real-time_collaborative_code_editor/diagram.png) | Conversation: [conversation.md](projects/20250813_034007_Create_a_real-time_collaborative_code_editor/conversation.md)
+![Diagram](projects/20250813_034007_Create_a_real-time_collaborative_code_editor/diagram.svg)
+
+
+### 2025-08-13 04:25:46.804999 — Build a real-time chat application with encryption
+- Folder: `projects/20250813_042429_Build_a_real-time_chat_application_with_encryption`
+- Design: [DESIGN.md](projects/20250813_042429_Build_a_real-time_chat_application_with_encryption/DESIGN.md) | Diagram: [diagram.mmd](projects/20250813_042429_Build_a_real-time_chat_application_with_encryption/diagram.mmd) | SVG: [diagram.svg](projects/20250813_042429_Build_a_real-time_chat_application_with_encryption/diagram.svg) | PNG: [diagram.png](projects/20250813_042429_Build_a_real-time_chat_application_with_encryption/diagram.png) | Conversation: [conversation.md](projects/20250813_042429_Build_a_real-time_chat_application_with_encryption/conversation.md)
+![Diagram](projects/20250813_042429_Build_a_real-time_chat_application_with_encryption/diagram.svg)
