@@ -8,26 +8,16 @@ graph TB
     classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
     classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
 
-    lb1((Load Balancer
-(Nginx)))
-    apiGateway[API Gateway
-(AWS API Gateway)]
-    authService[Authentication Service
-(Express.js, JWT)]
-    collabService[Collaboration Service
-(Node.js, WebSocket)]
-    editorService[Editor Service
-(React, CodeMirror)]
-    notificationService[Notification Service
-(RabbitMQ)]
-    userDB[(User Database
-(PostgreSQL))]
-    sessionDB[(Session Database
-(Redis))]
-    fileStorage[[File Storage
-(AWS S3)]]
-    analyticsService[Analytics Service
-(Apache Kafka)]
+    lb1((Load Balancer - Nginx))
+    apiGateway[API Gateway - AWS API Gateway]
+    authService[Authentication Service - Express.js, JWT]
+    collabService[Collaboration Service - Node.js, WebSocket]
+    editorService[Editor Service - React, CodeMirror]
+    notificationService[Notification Service - RabbitMQ]
+    userDB[(User Database - PostgreSQL)]
+    sessionDB[(Session Database - Redis)]
+    fileStorage[[File Storage - AWS S3]]
+    analyticsService[Analytics Service - Apache Kafka]
 
     lb1 -->|HTTP traffic| apiGateway
     apiGateway -->|Authentication requests| authService

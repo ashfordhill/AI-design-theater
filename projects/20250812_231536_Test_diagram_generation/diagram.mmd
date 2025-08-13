@@ -1,0 +1,40 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1((Load Balancer - NGINX))
+    api_gateway[API Gateway - Kong]
+    test_diagram_service[Test Diagram Generation Service - Spring Boot]
+    user_service[User Management Service - Node.js]
+    notification_service[Notification Service - RabbitMQ]
+    database[(User Data Database - PostgreSQL)]
+    cache{{(Cache Layer - Redis)}}
+    message_queue[[Message Queue - Kafka]]
+    external_api[[External Diagram API - REST]]
+
+    lb1 -->|HTTP request| api_gateway
+    api_gateway -->|HTTP request| user_service
+    api_gateway -->|HTTP request| test_diagram_service
+    user_service -->|SQL query| database
+    test_diagram_service -->|HTTP request| external_api
+    test_diagram_service -->|Message| notification_service
+    notification_service -->|Publish message| message_queue
+    message_queue -->|Consume message| user_service
+    user_service -->|Cache user data| cache
+    cache -->|Retrieve cached data| user_service
+
+    class lb1 userInterface
+    class api_gateway apiLayer
+    class test_diagram_service service
+    class user_service service
+    class notification_service service
+    class database database
+    class cache cache
+    class message_queue external
+    class external_api external

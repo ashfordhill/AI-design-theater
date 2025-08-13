@@ -1,0 +1,17 @@
+{
+  "title": "Design for Test diagram generation",
+  "description": "Test diagram generation? Are you kidding me? We're not stuck in the 90s here. Machine learning can auto-generate diagrams from code. Why waste time manually drawing boxes and arrows like cavemen? What...",
+  "conversation_id": "2174d32f-3d11-43ca-95f7-9aa7d9d33069",
+  "participants": [
+    "Idealist",
+    "Cost Cutter"
+  ],
+  "created_at": "2025-08-12 23:15:44.213205",
+  "mermaid_diagram": "graph TB\n\n    %% Professional Software Architecture Styling\n    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000\n    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000\n    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000\n    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000\n    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000\n    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000\n\n    lb1((Load Balancer - NGINX))\n    api_gateway[API Gateway - Kong]\n    test_diagram_service[Test Diagram Generation Service - Spring Boot]\n    user_service[User Management Service - Node.js]\n    notification_service[Notification Service - RabbitMQ]\n    database[(User Data Database - PostgreSQL)]\n    cache{{(Cache Layer - Redis)}}\n    message_queue[[Message Queue - Kafka]]\n    external_api[[External Diagram API - REST]]\n\n    lb1 -->|HTTP request| api_gateway\n    api_gateway -->|HTTP request| user_service\n    api_gateway -->|HTTP request| test_diagram_service\n    user_service -->|SQL query| database\n    test_diagram_service -->|HTTP request| external_api\n    test_diagram_service -->|Message| notification_service\n    notification_service -->|Publish message| message_queue\n    message_queue -->|Consume message| user_service\n    user_service -->|Cache user data| cache\n    cache -->|Retrieve cached data| user_service\n\n    class lb1 userInterface\n    class api_gateway apiLayer\n    class test_diagram_service service\n    class user_service service\n    class notification_service service\n    class database database\n    class cache cache\n    class message_queue external\n    class external_api external",
+  "key_decisions": [],
+  "trade_offs": [],
+  "implementation_notes": [
+    "Test diagram generation? Are you kidding me? We're not stuck in the 90s here. Machine learning can auto-generate diagrams from code. Why waste time manually drawing boxes and arrow"
+  ],
+  "conversation_summary": "A 3-turn conversation between Idealist and Cost Cutter discussing 'Test diagram generation'. The conversation reached the maximum number of turns."
+}

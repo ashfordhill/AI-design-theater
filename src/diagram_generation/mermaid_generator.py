@@ -89,6 +89,8 @@ Do not include conversation content or entertainment elements. Generate serious,
             print(f"LLM diagram generation failed: {e}, falling back to smart defaults")
             return self._generate_component_graph_fallback(design_doc, detail_level)
     
+
+    
     def _create_mermaid_from_llm_response(self, llm_response: str, title: str) -> str:
         """Convert LLM JSON response into professional Mermaid diagram."""
         import json
@@ -119,14 +121,14 @@ Do not include conversation content or entertainment elements. Generate serious,
             # Add components with proper shapes
             for comp_id, comp_info in arch_data["components"].items():
                 comp_type = comp_info["type"]
-                label = comp_info["label"]
+                label = self._clean_text_for_mermaid(comp_info["label"])
                 
                 if comp_type == "user":
                     mermaid.append(f"    {comp_id}(({label}))")
                 elif comp_type == "database":
                     mermaid.append(f"    {comp_id}[({label})]")
                 elif comp_type == "cache":
-                    mermaid.append(f"    {comp_id}{{{{({label})}}}}") 
+                    mermaid.append(f"    {comp_id}{{{label}}}") 
                 elif comp_type == "external":
                     mermaid.append(f"    {comp_id}[[{label}]]")
                 else:  # api, service
@@ -141,7 +143,8 @@ Do not include conversation content or entertainment elements. Generate serious,
                 label = conn.get("label", "")
                 
                 if label:
-                    mermaid.append(f"    {from_comp} -->|{label}| {to_comp}")
+                    sanitized_label = self._clean_text_for_mermaid(label)
+                    mermaid.append(f"    {from_comp} -->|{sanitized_label}| {to_comp}")
                 else:
                     mermaid.append(f"    {from_comp} --> {to_comp}")
             
@@ -193,14 +196,14 @@ Do not include conversation content or entertainment elements. Generate serious,
         # Add components with proper shapes
         for comp_id, comp_info in components.items():
             comp_type = comp_info["type"]
-            label = comp_info["label"]
+            label = self._clean_text_for_mermaid(comp_info["label"])
             
             if comp_type == "user":
                 mermaid.append(f"    {comp_id}(({label}))")
             elif comp_type == "database":
                 mermaid.append(f"    {comp_id}[({label})]")
             elif comp_type == "cache":
-                mermaid.append(f"    {comp_id}{{{{({label})}}}}") 
+                mermaid.append(f"    {comp_id}{{{label}}}") 
             elif comp_type == "external":
                 mermaid.append(f"    {comp_id}[[{label}]]")
             else:  # api, service
@@ -251,7 +254,7 @@ Do not include conversation content or entertainment elements. Generate serious,
         # Generate nodes with proper styling
         node_classes = {}
         for comp_id, comp_info in actual_components.items():
-            label = comp_info['label']
+            label = self._clean_text_for_mermaid(comp_info['label'])
             comp_type = comp_info['type']
             
             # Choose node shape based on type
@@ -265,13 +268,13 @@ Do not include conversation content or entertainment elements. Generate serious,
                 mermaid.append(f"    {comp_id}[{label}]")
                 node_classes[comp_id] = "service"
             elif comp_type == 'database':
-                mermaid.append(f"    {comp_id}[(({label})])")
+                mermaid.append(f"    {comp_id}[({label})]")
                 node_classes[comp_id] = "database"
             elif comp_type == 'cache':
-                mermaid.append(f"    {comp_id}[{label}]")
+                mermaid.append(f"    {comp_id}{{{label}}}")
                 node_classes[comp_id] = "cache"
             elif comp_type == 'external':
-                mermaid.append(f"    {comp_id}{{{label}}}")
+                mermaid.append(f"    {comp_id}[[{label}]]")
                 node_classes[comp_id] = "external"
             else:
                 mermaid.append(f"    {comp_id}[{label}]")
@@ -965,12 +968,22 @@ Do not include conversation content or entertainment elements. Generate serious,
     
     def _clean_text_for_mermaid(self, text: str) -> str:
         """Clean text to be safe for Mermaid diagrams."""
-        # Remove special characters and limit length
-        cleaned = re.sub(r'[^\w\s-]', '', text)
-        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+        # Replace newlines with spaces and clean up extra whitespace
+        cleaned = ' '.join(text.split())
+        # Escape special characters that could break Mermaid syntax
+        cleaned = cleaned.replace('"', "'").replace('`', "'")
+        # Replace parentheses with dashes to avoid parsing issues
+        cleaned = cleaned.replace('(', '- ').replace(')', '')
+        # Clean up any double spaces or trailing dashes
+        cleaned = ' '.join(cleaned.split()).rstrip('- ')
         
-        # Limit length
-        if len(cleaned) > 30:
-            cleaned = cleaned[:27] + "..."
+        # Limit length more conservatively to avoid breaking syntax
+        if len(cleaned) > 40:
+            # Find a good break point (space) near the limit
+            if ' ' in cleaned[:37]:
+                last_space = cleaned[:37].rfind(' ')
+                cleaned = cleaned[:last_space] + "..."
+            else:
+                cleaned = cleaned[:37] + "..."
         
         return cleaned or "Node"
