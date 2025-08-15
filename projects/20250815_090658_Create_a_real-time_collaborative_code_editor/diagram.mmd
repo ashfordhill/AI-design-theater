@@ -1,0 +1,43 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1((Load Balancer - NGINX))
+    api1[API Gateway - Express.js]
+    ws1[WebSocket Service - Socket.IO]
+    auth1[Authentication Service - JWT, OAuth2]
+    collab1[Collaboration Service - Node.js, Redis]
+    doc1[Document Service - Node.js, MongoDB]
+    db1[(User Database - PostgreSQL)]
+    cache1{Session Cache - Redis}
+    msg1[Message Queue - Kafka]
+    ext1[[External API - GitHub API]]
+
+    lb1 -->|HTTP traffic| api1
+    api1 -->|Authentication requests| auth1
+    api1 -->|Document CRUD operations| doc1
+    api1 -->|Collaboration requests| collab1
+    api1 -->|Event notifications| msg1
+    auth1 -->|User data retrieval| db1
+    collab1 -->|Real-time updates| ws1
+    collab1 -->|Session management| cache1
+    doc1 -->|Document storage| db1
+    msg1 -->|Message delivery| collab1
+    doc1 -->|External data sync| ext1
+
+    class lb1 userInterface
+    class api1 apiLayer
+    class ws1 service
+    class auth1 service
+    class collab1 service
+    class doc1 service
+    class db1 database
+    class cache1 cache
+    class msg1 service
+    class ext1 external
