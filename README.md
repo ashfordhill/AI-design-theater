@@ -1,14 +1,13 @@
 # 🎭 AI Design Theater
 
+[![BANNER](readme/banner.gif)](https://www.ashhill.dev/)
+
 <!-- LATEST_DAILY_START -->
 > ## 🌅 Latest Daily Design
 > **Topic:** Build a real-time chat application with encryption
 > **Created:** 2025-08-13 04:25:46.804999
 > **Project:** 20250813_042429_Build_a_real-time_chat_application_with_encryption
 >
-<<<<<<< Updated upstream
-> ![Diagram](projects/20250813_042429_Build_a_real-time_chat_application_with_encryption/diagram.svg)
-=======
 > ![Diagram](projects/20250813_034007_Create_a_real-time_collaborative_code_editor/diagram.svg)
 >
 > ## 💬 Design Conversation
@@ -127,7 +126,6 @@
 > </div>
 >
 > </details>
->>>>>>> Stashed changes
 >
 > View full: projects/20250813_042429_Build_a_real-time_chat_application_with_encryption
 <!-- LATEST_DAILY_END -->
