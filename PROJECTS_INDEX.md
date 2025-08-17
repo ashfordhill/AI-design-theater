@@ -163,3 +163,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250817_000923_Design_a_secure_multi-tenant_SaaS_platform`
 - Design: [DESIGN.md](projects/20250817_000923_Design_a_secure_multi-tenant_SaaS_platform/DESIGN.md) | Diagram: [diagram.mmd](projects/20250817_000923_Design_a_secure_multi-tenant_SaaS_platform/diagram.mmd) | SVG: [diagram.svg](projects/20250817_000923_Design_a_secure_multi-tenant_SaaS_platform/diagram.svg) | PNG: [diagram.png](projects/20250817_000923_Design_a_secure_multi-tenant_SaaS_platform/diagram.png) | Conversation: [conversation.md](projects/20250817_000923_Design_a_secure_multi-tenant_SaaS_platform/conversation.md)
 ![Diagram](projects/20250817_000923_Design_a_secure_multi-tenant_SaaS_platform/diagram.svg)
+
+
+### 2025-08-17 09:07:11.416009 — Design a distributed caching system
+- Folder: `projects/20250817_090627_Design_a_distributed_caching_system`
+- Design: [DESIGN.md](projects/20250817_090627_Design_a_distributed_caching_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20250817_090627_Design_a_distributed_caching_system/diagram.mmd) | SVG: [diagram.svg](projects/20250817_090627_Design_a_distributed_caching_system/diagram.svg) | PNG: [diagram.png](projects/20250817_090627_Design_a_distributed_caching_system/diagram.png) | Conversation: [conversation.md](projects/20250817_090627_Design_a_distributed_caching_system/conversation.md)
+![Diagram](projects/20250817_090627_Design_a_distributed_caching_system/diagram.svg)
