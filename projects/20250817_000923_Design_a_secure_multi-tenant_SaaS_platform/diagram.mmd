@@ -1,0 +1,52 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1[Load Balancer - NGINX]
+    api_gateway[API Gateway - AWS API Gateway]
+    auth_service[Authentication Service - IdentityServer4]
+    user_service[User Management Service - Spring Boot]
+    tenant_service[Tenant Management Service - Spring Boot]
+    billing_service[Billing Service - Node.js]
+    data_service[Data Service - GraphQL]
+    postgres_db[(PostgreSQL Database - PostgreSQL)]
+    redis_cache{Cache - Redis}
+    message_queue[Message Queue - Apache Kafka]
+    monitoring_service[Monitoring Service - Prometheus &...]
+    external_payment_gateway[[External Payment Gateway - Stripe]]
+
+    lb1 -->|HTTP traffic| api_gateway
+    api_gateway -->|Authentication requests| auth_service
+    api_gateway -->|User management requests| user_service
+    api_gateway -->|Tenant management requests| tenant_service
+    api_gateway -->|Billing requests| billing_service
+    api_gateway -->|Data queries| data_service
+    auth_service -->|User data storage| postgres_db
+    user_service -->|User data storage| postgres_db
+    tenant_service -->|Tenant data storage| postgres_db
+    billing_service -->|Payment processing| external_payment_gateway
+    billing_service -->|Billing data storage| postgres_db
+    data_service -->|Data storage| postgres_db
+    data_service -->|Cache data| redis_cache
+    data_service -->|Event publishing| message_queue
+    message_queue -->|Event monitoring| monitoring_service
+    monitoring_service -->|Health metrics| api_gateway
+
+    class lb1 service
+    class api_gateway apiLayer
+    class auth_service service
+    class user_service service
+    class tenant_service service
+    class billing_service service
+    class data_service service
+    class postgres_db database
+    class redis_cache cache
+    class message_queue service
+    class monitoring_service service
+    class external_payment_gateway external
