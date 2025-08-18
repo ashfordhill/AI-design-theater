@@ -1,0 +1,43 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb-1((Load Balancer - NGINX))
+    api-gateway-1[API Gateway - Kong]
+    auth-service-1[Authentication Service - Spring Boot]
+    metrics-collector-1[Metrics Collector - Node.js]
+    alert-service-1[Alert Service - Python Flask]
+    dashboard-1((Dashboard - React))
+    notification-service-1[Notification Service - RabbitMQ]
+    database-1[(Metrics Database - PostgreSQL)]
+    cache-1{Cache - Redis}
+    message-queue-1[[Message Queue - Kafka]]
+
+    lb-1 -->|HTTP Traffic| api-gateway-1
+    api-gateway-1 -->|Authentication| auth-service-1
+    api-gateway-1 -->|Metrics Collection| metrics-collector-1
+    api-gateway-1 -->|Alert Management| alert-service-1
+    api-gateway-1 -->|Notifications| notification-service-1
+    metrics-collector-1 -->|Store Metrics| database-1
+    alert-service-1 -->|Send Alerts| notification-service-1
+    database-1 -->|Cache Metrics| cache-1
+    cache-1 -->|Serve Cached Metrics| dashboard-1
+    metrics-collector-1 -->|Publish Metrics| message-queue-1
+    message-queue-1 -->|Consume Metrics| alert-service-1
+
+    class lb-1 userInterface
+    class api-gateway-1 apiLayer
+    class auth-service-1 service
+    class metrics-collector-1 service
+    class alert-service-1 service
+    class dashboard-1 userInterface
+    class notification-service-1 service
+    class database-1 database
+    class cache-1 cache
+    class message-queue-1 external
