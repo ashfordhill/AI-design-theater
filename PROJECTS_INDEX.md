@@ -181,3 +181,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250819_090707_Design_a_distributed_caching_system`
 - Design: [DESIGN.md](projects/20250819_090707_Design_a_distributed_caching_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20250819_090707_Design_a_distributed_caching_system/diagram.mmd) | SVG: [diagram.svg](projects/20250819_090707_Design_a_distributed_caching_system/diagram.svg) | PNG: [diagram.png](projects/20250819_090707_Design_a_distributed_caching_system/diagram.png) | Conversation: [conversation.md](projects/20250819_090707_Design_a_distributed_caching_system/conversation.md)
 ![Diagram](projects/20250819_090707_Design_a_distributed_caching_system/diagram.svg)
+
+
+### 2025-08-20 09:08:25.649429 — Design a content delivery network architecture
+- Folder: `projects/20250820_090741_Design_a_content_delivery_network_architecture`
+- Design: [DESIGN.md](projects/20250820_090741_Design_a_content_delivery_network_architecture/DESIGN.md) | Diagram: [diagram.mmd](projects/20250820_090741_Design_a_content_delivery_network_architecture/diagram.mmd) | SVG: [diagram.svg](projects/20250820_090741_Design_a_content_delivery_network_architecture/diagram.svg) | PNG: [diagram.png](projects/20250820_090741_Design_a_content_delivery_network_architecture/diagram.png) | Conversation: [conversation.md](projects/20250820_090741_Design_a_content_delivery_network_architecture/conversation.md)
+![Diagram](projects/20250820_090741_Design_a_content_delivery_network_architecture/diagram.svg)
