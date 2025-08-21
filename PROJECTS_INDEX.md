@@ -187,3 +187,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250820_090741_Design_a_content_delivery_network_architecture`
 - Design: [DESIGN.md](projects/20250820_090741_Design_a_content_delivery_network_architecture/DESIGN.md) | Diagram: [diagram.mmd](projects/20250820_090741_Design_a_content_delivery_network_architecture/diagram.mmd) | SVG: [diagram.svg](projects/20250820_090741_Design_a_content_delivery_network_architecture/diagram.svg) | PNG: [diagram.png](projects/20250820_090741_Design_a_content_delivery_network_architecture/diagram.png) | Conversation: [conversation.md](projects/20250820_090741_Design_a_content_delivery_network_architecture/conversation.md)
 ![Diagram](projects/20250820_090741_Design_a_content_delivery_network_architecture/diagram.svg)
+
+
+### 2025-08-21 09:08:27.356792 — Build a real-time chat application with encryption
+- Folder: `projects/20250821_090748_Build_a_real-time_chat_application_with_encryption`
+- Design: [DESIGN.md](projects/20250821_090748_Build_a_real-time_chat_application_with_encryption/DESIGN.md) | Diagram: [diagram.mmd](projects/20250821_090748_Build_a_real-time_chat_application_with_encryption/diagram.mmd) | SVG: [diagram.svg](projects/20250821_090748_Build_a_real-time_chat_application_with_encryption/diagram.svg) | PNG: [diagram.png](projects/20250821_090748_Build_a_real-time_chat_application_with_encryption/diagram.png) | Conversation: [conversation.md](projects/20250821_090748_Build_a_real-time_chat_application_with_encryption/conversation.md)
+![Diagram](projects/20250821_090748_Build_a_real-time_chat_application_with_encryption/diagram.svg)
