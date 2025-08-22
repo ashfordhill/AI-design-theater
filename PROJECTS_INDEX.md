@@ -193,3 +193,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250821_090748_Build_a_real-time_chat_application_with_encryption`
 - Design: [DESIGN.md](projects/20250821_090748_Build_a_real-time_chat_application_with_encryption/DESIGN.md) | Diagram: [diagram.mmd](projects/20250821_090748_Build_a_real-time_chat_application_with_encryption/diagram.mmd) | SVG: [diagram.svg](projects/20250821_090748_Build_a_real-time_chat_application_with_encryption/diagram.svg) | PNG: [diagram.png](projects/20250821_090748_Build_a_real-time_chat_application_with_encryption/diagram.png) | Conversation: [conversation.md](projects/20250821_090748_Build_a_real-time_chat_application_with_encryption/conversation.md)
 ![Diagram](projects/20250821_090748_Build_a_real-time_chat_application_with_encryption/diagram.svg)
+
+
+### 2025-08-22 09:07:58.536799 — Create a real-time fraud detection system
+- Folder: `projects/20250822_090715_Create_a_real-time_fraud_detection_system`
+- Design: [DESIGN.md](projects/20250822_090715_Create_a_real-time_fraud_detection_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20250822_090715_Create_a_real-time_fraud_detection_system/diagram.mmd) | SVG: [diagram.svg](projects/20250822_090715_Create_a_real-time_fraud_detection_system/diagram.svg) | PNG: [diagram.png](projects/20250822_090715_Create_a_real-time_fraud_detection_system/diagram.png) | Conversation: [conversation.md](projects/20250822_090715_Create_a_real-time_fraud_detection_system/conversation.md)
+![Diagram](projects/20250822_090715_Create_a_real-time_fraud_detection_system/diagram.svg)

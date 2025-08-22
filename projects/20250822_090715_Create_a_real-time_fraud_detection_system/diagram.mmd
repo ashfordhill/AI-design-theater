@@ -1,0 +1,40 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1((Load Balancer - NGINX))
+    api_gateway[API Gateway - AWS API Gateway]
+    fraud_detection_service[Fraud Detection Service - Spring...]
+    data_ingestion_service[Data Ingestion Service - Apache Kafka]
+    real_time_processing_service[Real-Time Processing Service -...]
+    user_activity_db[(User Activity Database - PostgreSQL)]
+    fraud_alert_db[(Fraud Alert Database - MongoDB)]
+    cache{Cache - Redis}
+    external_api[[External Fraud Detection API -...]]
+
+    lb1 -->|HTTP request| api_gateway
+    api_gateway -->|HTTP request| data_ingestion_service
+    data_ingestion_service -->|Write| user_activity_db
+    data_ingestion_service -->|Kafka topic| real_time_processing_service
+    real_time_processing_service -->|Read/Write| cache
+    real_time_processing_service -->|Write| fraud_alert_db
+    real_time_processing_service -->|HTTP request| external_api
+    fraud_alert_db -->|Read| api_gateway
+    cache -->|Read| fraud_detection_service
+    fraud_detection_service -->|Write| fraud_alert_db
+
+    class lb1 userInterface
+    class api_gateway apiLayer
+    class fraud_detection_service service
+    class data_ingestion_service service
+    class real_time_processing_service service
+    class user_activity_db database
+    class fraud_alert_db database
+    class cache cache
+    class external_api external
