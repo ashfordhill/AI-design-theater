@@ -1,0 +1,42 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1((Load Balancer - NGINX))
+    api_gateway[API Gateway - Kong]
+    auth_service[Authentication Service - Spring Boot]
+    container_registry[[Container Registry - Docker Hub]]
+    orchestration_service[Container Orchestration - Kubernetes]
+    monitoring_service[Monitoring Service - Prometheus]
+    logging_service[Logging Service - ELK Stack]
+    database[(Database - PostgreSQL)]
+    cache{Cache - Redis}
+    message_queue[Message Queue - Kafka]
+
+    lb1 -->|HTTP traffic| api_gateway
+    api_gateway -->|API calls| auth_service
+    api_gateway -->|API calls| orchestration_service
+    orchestration_service -->|pull images| container_registry
+    orchestration_service -->|database access| database
+    orchestration_service -->|cache access| cache
+    orchestration_service -->|send messages| message_queue
+    orchestration_service -->|metrics| monitoring_service
+    orchestration_service -->|logs| logging_service
+    auth_service -->|user data access| database
+
+    class lb1 userInterface
+    class api_gateway apiLayer
+    class auth_service service
+    class container_registry external
+    class orchestration_service service
+    class monitoring_service service
+    class logging_service service
+    class database database
+    class cache cache
+    class message_queue service
