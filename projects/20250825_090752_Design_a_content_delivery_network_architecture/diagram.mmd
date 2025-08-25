@@ -1,0 +1,39 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1[Load Balancer - Nginx/HAProxy]
+    apiGateway[API Gateway - AWS API Gateway]
+    cdnEdge[CDN Edge Nodes - Akamai/Cloudflare]
+    originServer[Origin Server - AWS EC2 with Nginx]
+    database[(Content Database - PostgreSQL)]
+    cache{Cache Layer - Redis}
+    monitoring[Monitoring Service - Prometheus/Grafana]
+    analytics[Analytics Service - AWS Kinesis]
+    cdnProvider[[CDN Provider API - Akamai API]]
+
+    lb1 -->|HTTP- S traffic| apiGateway
+    apiGateway -->|API requests| cdnEdge
+    cdnEdge -->|Cache Miss| originServer
+    originServer -->|Data retrieval| database
+    originServer -->|Cache updates| cache
+    cache -->|Cached content| cdnEdge
+    cdnEdge -->|Content distribution| cdnProvider
+    originServer -->|Health metrics| monitoring
+    originServer -->|User interaction data| analytics
+
+    class lb1 service
+    class apiGateway apiLayer
+    class cdnEdge service
+    class originServer service
+    class database database
+    class cache cache
+    class monitoring service
+    class analytics service
+    class cdnProvider external
