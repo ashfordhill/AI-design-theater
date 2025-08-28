@@ -1,0 +1,40 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1[Load Balancer - NGINX]
+    apiGateway[API Gateway - AWS API Gateway]
+    authService[Authentication Service - Node.js,...]
+    dataService[Data Service - Spring Boot, REST API]
+    offlineStorage[Offline Storage - IndexedDB]
+    database[(Database - PostgreSQL)]
+    cache{Cache - Redis}
+    messageBroker[Message Broker - Apache Kafka]
+    pwa((Progressive Web App - React, Service...))
+
+    pwa -->|HTTP request| lb1
+    lb1 -->|HTTP request| apiGateway
+    apiGateway -->|API call| authService
+    apiGateway -->|API call| dataService
+    dataService -->|SQL query| database
+    dataService -->|Cache lookup| cache
+    dataService -->|Event publish| messageBroker
+    authService -->|SQL query| database
+    pwa -->|Data sync| offlineStorage
+    offlineStorage -->|Data retrieval| dataService
+
+    class lb1 service
+    class apiGateway apiLayer
+    class authService service
+    class dataService service
+    class offlineStorage service
+    class database database
+    class cache cache
+    class messageBroker service
+    class pwa userInterface

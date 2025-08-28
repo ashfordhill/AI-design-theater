@@ -223,3 +223,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250827_090705_Design_a_secure_multi-tenant_SaaS_platform`
 - Design: [DESIGN.md](projects/20250827_090705_Design_a_secure_multi-tenant_SaaS_platform/DESIGN.md) | Diagram: [diagram.mmd](projects/20250827_090705_Design_a_secure_multi-tenant_SaaS_platform/diagram.mmd) | SVG: [diagram.svg](projects/20250827_090705_Design_a_secure_multi-tenant_SaaS_platform/diagram.svg) | PNG: [diagram.png](projects/20250827_090705_Design_a_secure_multi-tenant_SaaS_platform/diagram.png) | Conversation: [conversation.md](projects/20250827_090705_Design_a_secure_multi-tenant_SaaS_platform/conversation.md)
 ![Diagram](projects/20250827_090705_Design_a_secure_multi-tenant_SaaS_platform/diagram.svg)
+
+
+### 2025-08-28 09:08:25.797488 — Create a progressive web app for offline functiona
+- Folder: `projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona`
+- Design: [DESIGN.md](projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona/DESIGN.md) | Diagram: [diagram.mmd](projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona/diagram.mmd) | SVG: [diagram.svg](projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona/diagram.svg) | PNG: [diagram.png](projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona/diagram.png) | Conversation: [conversation.md](projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona/conversation.md)
+![Diagram](projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona/diagram.svg)
