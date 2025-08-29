@@ -1,0 +1,41 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb-1((Load Balancer - NGINX))
+    api-gateway-1[API Gateway - Kong]
+    auth-service-1[Authentication Service - Node.js,...]
+    collab-editor-service-1[Collaborative Editor Service - Go,...]
+    code-storage-1[(Code Storage - PostgreSQL)]
+    user-session-cache-1{User Session Cache - Redis}
+    notification-service-1[Notification Service - Node.js,...]
+    message-queue-1[Message Queue - Kafka]
+    frontend-1((Frontend Application - React))
+
+    lb-1 -->|HTTP/HTTPS| api-gateway-1
+    api-gateway-1 -->|HTTP| auth-service-1
+    api-gateway-1 -->|HTTP| collab-editor-service-1
+    api-gateway-1 -->|HTTP| notification-service-1
+    auth-service-1 -->|Cache| user-session-cache-1
+    collab-editor-service-1 -->|SQL| code-storage-1
+    collab-editor-service-1 -->|Event| message-queue-1
+    notification-service-1 -->|Event| message-queue-1
+    frontend-1 -->|HTTP| api-gateway-1
+    collab-editor-service-1 -->|Cache| user-session-cache-1
+    message-queue-1 -->|Event| collab-editor-service-1
+
+    class lb-1 userInterface
+    class api-gateway-1 apiLayer
+    class auth-service-1 service
+    class collab-editor-service-1 service
+    class code-storage-1 database
+    class user-session-cache-1 cache
+    class notification-service-1 service
+    class message-queue-1 service
+    class frontend-1 userInterface

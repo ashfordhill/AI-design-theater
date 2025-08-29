@@ -1,0 +1,28 @@
+{
+  "title": "Design for Create a real-time collaborative code editor",
+  "description": "Syntax highlighting? Are you fucking kidding me? That's your big idea? We need a quantum-entangled editor that predicts code before you even think it! Why don't you just suggest we use punch cards whi...",
+  "conversation_id": "5516a18b-68b9-4f0e-b4ab-aa8b64f86f30",
+  "participants": [
+    "Idealist",
+    "Cost Cutter"
+  ],
+  "created_at": "2025-08-29 09:08:06.852797",
+  "mermaid_diagram": "graph TB\n\n    %% Professional Software Architecture Styling\n    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000\n    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000\n    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000\n    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000\n    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000\n    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000\n\n    lb-1((Load Balancer - NGINX))\n    api-gateway-1[API Gateway - Kong]\n    auth-service-1[Authentication Service - Node.js,...]\n    collab-editor-service-1[Collaborative Editor Service - Go,...]\n    code-storage-1[(Code Storage - PostgreSQL)]\n    user-session-cache-1{User Session Cache - Redis}\n    notification-service-1[Notification Service - Node.js,...]\n    message-queue-1[Message Queue - Kafka]\n    frontend-1((Frontend Application - React))\n\n    lb-1 -->|HTTP/HTTPS| api-gateway-1\n    api-gateway-1 -->|HTTP| auth-service-1\n    api-gateway-1 -->|HTTP| collab-editor-service-1\n    api-gateway-1 -->|HTTP| notification-service-1\n    auth-service-1 -->|Cache| user-session-cache-1\n    collab-editor-service-1 -->|SQL| code-storage-1\n    collab-editor-service-1 -->|Event| message-queue-1\n    notification-service-1 -->|Event| message-queue-1\n    frontend-1 -->|HTTP| api-gateway-1\n    collab-editor-service-1 -->|Cache| user-session-cache-1\n    message-queue-1 -->|Event| collab-editor-service-1\n\n    class lb-1 userInterface\n    class api-gateway-1 apiLayer\n    class auth-service-1 service\n    class collab-editor-service-1 service\n    class code-storage-1 database\n    class user-session-cache-1 cache\n    class notification-service-1 service\n    class message-queue-1 service\n    class frontend-1 userInterface",
+  "key_decisions": [
+    "distributed edge caching and WebAssembly for instant, zero-latency highlighting across the globe! Your penny-pinching bullshit is why we're stuck in the stone age",
+    "a CRDT-based approach with blockchain verification to ensure perfect consistency! Your outdated thinking is why tech stagnates",
+    "a neural network to optimize CRDT merges, slashing overhead to practically zero",
+    "federated learning on users' devices, you dinosaur! Zero central storage, instant scaling",
+    "quantum encryption, you technophobic fossil! Unbreakable security, instant compliance",
+    "post-quantum cryptography algorithms running on custom ASICs, you luddite! Zero latency, future-proof security",
+    "AI to auto-generate and maintain the code, you obsolete calculator! Zero maintenance, instant updates",
+    "zero-knowledge proofs and homomorphic encryption to compress and secure data on-chain! Infinite scalability, zero overhead",
+    "quantum-inspired optimization algorithms to dynamically allocate resources, you prehistoric bean counter! Zero waste, infinite efficiency",
+    "a decentralized mesh network of user devices for distributed computing and storage, you short-sighted fossil! Zero central costs, infinite scalability"
+  ],
+  "trade_offs": [],
+  "implementation_notes": [
+    "Skyrocketing expenses? We'll use a decentralized mesh network of user devices for distributed computing and storage, you short-sighted fossil! Zero central costs, infinite scalabil"
+  ],
+  "conversation_summary": "A 24-turn conversation between Idealist and Cost Cutter discussing 'Create a real-time collaborative code editor'. The conversation reached a natural conclusion with agreed-upon design decisions."
+}

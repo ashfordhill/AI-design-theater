@@ -229,3 +229,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona`
 - Design: [DESIGN.md](projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona/DESIGN.md) | Diagram: [diagram.mmd](projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona/diagram.mmd) | SVG: [diagram.svg](projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona/diagram.svg) | PNG: [diagram.png](projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona/diagram.png) | Conversation: [conversation.md](projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona/conversation.md)
 ![Diagram](projects/20250828_090708_Create_a_progressive_web_app_for_offline_functiona/diagram.svg)
+
+
+### 2025-08-29 09:08:06.852797 — Create a real-time collaborative code editor
+- Folder: `projects/20250829_090700_Create_a_real-time_collaborative_code_editor`
+- Design: [DESIGN.md](projects/20250829_090700_Create_a_real-time_collaborative_code_editor/DESIGN.md) | Diagram: [diagram.mmd](projects/20250829_090700_Create_a_real-time_collaborative_code_editor/diagram.mmd) | SVG: [diagram.svg](projects/20250829_090700_Create_a_real-time_collaborative_code_editor/diagram.svg) | PNG: [diagram.png](projects/20250829_090700_Create_a_real-time_collaborative_code_editor/diagram.png) | Conversation: [conversation.md](projects/20250829_090700_Create_a_real-time_collaborative_code_editor/conversation.md)
+![Diagram](projects/20250829_090700_Create_a_real-time_collaborative_code_editor/diagram.svg)
