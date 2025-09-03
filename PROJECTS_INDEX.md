@@ -259,3 +259,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250902_090736_Build_a_GraphQL_API_gateway`
 - Design: [DESIGN.md](projects/20250902_090736_Build_a_GraphQL_API_gateway/DESIGN.md) | Diagram: [diagram.mmd](projects/20250902_090736_Build_a_GraphQL_API_gateway/diagram.mmd) | SVG: [diagram.svg](projects/20250902_090736_Build_a_GraphQL_API_gateway/diagram.svg) | PNG: [diagram.png](projects/20250902_090736_Build_a_GraphQL_API_gateway/diagram.png) | Conversation: [conversation.md](projects/20250902_090736_Build_a_GraphQL_API_gateway/conversation.md)
 ![Diagram](projects/20250902_090736_Build_a_GraphQL_API_gateway/diagram.svg)
+
+
+### 2025-09-03 09:08:12.289698 — Design a distributed caching system
+- Folder: `projects/20250903_090644_Design_a_distributed_caching_system`
+- Design: [DESIGN.md](projects/20250903_090644_Design_a_distributed_caching_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20250903_090644_Design_a_distributed_caching_system/diagram.mmd) | SVG: [diagram.svg](projects/20250903_090644_Design_a_distributed_caching_system/diagram.svg) | PNG: [diagram.png](projects/20250903_090644_Design_a_distributed_caching_system/diagram.png) | Conversation: [conversation.md](projects/20250903_090644_Design_a_distributed_caching_system/conversation.md)
+![Diagram](projects/20250903_090644_Design_a_distributed_caching_system/diagram.svg)
