@@ -1,0 +1,19 @@
+{
+  "title": "Design for Create a real-time collaborative code editor",
+  "description": "A \"real-time collaborative code editor\"? Please. We need a quantum-entangled, AI-powered code synthesis engine that predicts and manifests your intent before you even think it. Anything less is prehis...",
+  "conversation_id": "0e08adf6-4f0e-4b02-95ba-c8b926552b84",
+  "participants": [
+    "Idealist",
+    "Cost Cutter"
+  ],
+  "created_at": "2025-09-04 09:07:36.300031",
+  "mermaid_diagram": "graph TB\n\n    %% Professional Software Architecture Styling\n    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000\n    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000\n    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000\n    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000\n    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000\n    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000\n\n    lb1((Load Balancer - NGINX))\n    api_gateway[API Gateway - Kong]\n    auth_service[Authentication Service - IdentityServer]\n    editor_service[Real-time Editor Service - Node.js,...]\n    collaboration_service[Collaboration Service - Elixir,...]\n    notification_service[Notification Service - RabbitMQ]\n    document_db[(Document Database - MongoDB)]\n    user_db[(User Database - PostgreSQL)]\n    cache{Cache - Redis}\n    external_api[[External API - GitHub API]]\n\n    lb1 -->|HTTP Traffic| api_gateway\n    api_gateway -->|Authentication Requests| auth_service\n    api_gateway -->|Editor API Requests| editor_service\n    api_gateway -->|Collaboration API Requests| collaboration_service\n    api_gateway -->|Notification Requests| notification_service\n    editor_service -->|Document Storage| document_db\n    editor_service -->|Session Caching| cache\n    collaboration_service -->|Document Updates| document_db\n    collaboration_service -->|Real-time Notifications| notification_service\n    auth_service -->|User Data Access| user_db\n    notification_service -->|External Notifications| external_api\n    collaboration_service -->|User Presence Caching| cache\n\n    class lb1 userInterface\n    class api_gateway apiLayer\n    class auth_service service\n    class editor_service service\n    class collaboration_service service\n    class notification_service service\n    class document_db database\n    class user_db database\n    class cache cache\n    class external_api external",
+  "key_decisions": [],
+  "trade_offs": [
+    "Oh, please! Your \"future-proof\" design sounds like a tech utopia that\u2019ll collapse under its own weight! You think you can just sprinkle some AI pixie dust and call it a day? We nee"
+  ],
+  "implementation_notes": [
+    "Security? Ha! Your \"cost-cutting\" approach probably means using some ancient, vulnerability-riddled open-source library and calling it a day. We need military-grade, post-quantum c"
+  ],
+  "conversation_summary": "A 15-turn conversation between Idealist and Cost Cutter discussing 'Create a real-time collaborative code editor'. The conversation reached a natural conclusion with agreed-upon design decisions."
+}
