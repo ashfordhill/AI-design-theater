@@ -1,0 +1,36 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb-1[Load Balancer - AWS Elastic Load...]
+    api-gateway-1[API Gateway - AWS API Gateway]
+    upload-s3-1[Image Upload Storage - AWS S3]
+    lambda-1[Image Processing Function - AWS Lambda]
+    sns-1[Notification Service - AWS SNS]
+    db-1[(Metadata Database - AWS DynamoDB)]
+    cache-1{Image Cache - AWS ElastiCache - Redis}
+    cloudfront-1[[Content Delivery Network - AWS...]]
+
+    lb-1 -->|routes requests to| api-gateway-1
+    api-gateway-1 -->|uploads images to| upload-s3-1
+    upload-s3-1 -->|triggers processing on| lambda-1
+    lambda-1 -->|stores metadata in| db-1
+    lambda-1 -->|sends notifications to| sns-1
+    lambda-1 -->|caches processed images in| cache-1
+    cache-1 -->|serves cached images through| cloudfront-1
+    db-1 -->|provides metadata for| cloudfront-1
+
+    class lb-1 apiLayer
+    class api-gateway-1 apiLayer
+    class upload-s3-1 service
+    class lambda-1 service
+    class sns-1 service
+    class db-1 database
+    class cache-1 cache
+    class cloudfront-1 external
