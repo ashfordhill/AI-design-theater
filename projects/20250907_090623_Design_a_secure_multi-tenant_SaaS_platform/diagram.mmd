@@ -1,0 +1,48 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb-1[Load Balancer - NGINX]
+    api-gateway-1[API Gateway - AWS API Gateway]
+    auth-service-1[Authentication Service - Keycloak]
+    user-service-1[User Management Service - Spring Boot]
+    tenant-service-1[Tenant Management Service - Spring Boot]
+    data-service-1[Data Processing Service - Apache Kafka]
+    db-1[(User Database - PostgreSQL)]
+    db-2[(Tenant Database - PostgreSQL)]
+    cache-1{Cache - Redis}
+    monitoring-service-1[Monitoring Service - Prometheus &...]
+    notification-service-1[Notification Service - AWS SNS]
+    external-api-1[[External Payment Gateway - Stripe]]
+
+    lb-1 -->|HTTP traffic| api-gateway-1
+    api-gateway-1 -->|Authentication requests| auth-service-1
+    api-gateway-1 -->|User management requests| user-service-1
+    api-gateway-1 -->|Tenant management requests| tenant-service-1
+    api-gateway-1 -->|Data processing requests| data-service-1
+    user-service-1 -->|User data access| db-1
+    tenant-service-1 -->|Tenant data access| db-2
+    data-service-1 -->|Cached data| cache-1
+    data-service-1 -->|Data processing results| db-1
+    data-service-1 -->|Notification triggers| notification-service-1
+    notification-service-1 -->|Payment notifications| external-api-1
+    api-gateway-1 -->|Metrics and logs| monitoring-service-1
+
+    class lb-1 service
+    class api-gateway-1 apiLayer
+    class auth-service-1 service
+    class user-service-1 service
+    class tenant-service-1 service
+    class data-service-1 service
+    class db-1 database
+    class db-2 database
+    class cache-1 cache
+    class monitoring-service-1 service
+    class notification-service-1 service
+    class external-api-1 external

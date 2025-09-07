@@ -283,3 +283,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250906_090609_Design_a_microservices_monitoring_platform`
 - Design: [DESIGN.md](projects/20250906_090609_Design_a_microservices_monitoring_platform/DESIGN.md) | Diagram: [diagram.mmd](projects/20250906_090609_Design_a_microservices_monitoring_platform/diagram.mmd) | SVG: [diagram.svg](projects/20250906_090609_Design_a_microservices_monitoring_platform/diagram.svg) | PNG: [diagram.png](projects/20250906_090609_Design_a_microservices_monitoring_platform/diagram.png) | Conversation: [conversation.md](projects/20250906_090609_Design_a_microservices_monitoring_platform/conversation.md)
 ![Diagram](projects/20250906_090609_Design_a_microservices_monitoring_platform/diagram.svg)
+
+
+### 2025-09-07 09:06:59.917648 — Design a secure multi-tenant SaaS platform
+- Folder: `projects/20250907_090623_Design_a_secure_multi-tenant_SaaS_platform`
+- Design: [DESIGN.md](projects/20250907_090623_Design_a_secure_multi-tenant_SaaS_platform/DESIGN.md) | Diagram: [diagram.mmd](projects/20250907_090623_Design_a_secure_multi-tenant_SaaS_platform/diagram.mmd) | SVG: [diagram.svg](projects/20250907_090623_Design_a_secure_multi-tenant_SaaS_platform/diagram.svg) | PNG: [diagram.png](projects/20250907_090623_Design_a_secure_multi-tenant_SaaS_platform/diagram.png) | Conversation: [conversation.md](projects/20250907_090623_Design_a_secure_multi-tenant_SaaS_platform/conversation.md)
+![Diagram](projects/20250907_090623_Design_a_secure_multi-tenant_SaaS_platform/diagram.svg)
