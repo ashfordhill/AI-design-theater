@@ -1,0 +1,43 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1((Load Balancer - NGINX))
+    api_gateway[API Gateway - Kong]
+    auth_service[Authentication Service - Node.js, JWT]
+    chat_service[Chat Service - Go, WebSocket]
+    encryption_service[Encryption Service - Python, AES]
+    message_queue[Message Queue - Kafka]
+    user_db[(User Database - PostgreSQL)]
+    chat_db[(Chat Database - PostgreSQL)]
+    cache{Cache - Redis}
+    client((Client Application - React, Redux))
+
+    client -->|HTTP- S requests| lb1
+    lb1 -->|HTTP- S requests| api_gateway
+    api_gateway -->|Authentication requests| auth_service
+    api_gateway -->|WebSocket connection| chat_service
+    chat_service -->|Encryption requests| encryption_service
+    chat_service -->|Message publishing| message_queue
+    message_queue -->|Message consumption| chat_service
+    chat_service -->|Read/Write messages| chat_db
+    auth_service -->|User data access| user_db
+    chat_service -->|Cache frequently accessed data| cache
+    client -->|Authentication requests| auth_service
+
+    class lb1 userInterface
+    class api_gateway apiLayer
+    class auth_service service
+    class chat_service service
+    class encryption_service service
+    class message_queue service
+    class user_db database
+    class chat_db database
+    class cache cache
+    class client userInterface
