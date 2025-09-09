@@ -295,3 +295,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250908_090823_Build_a_real-time_chat_application_with_encryption`
 - Design: [DESIGN.md](projects/20250908_090823_Build_a_real-time_chat_application_with_encryption/DESIGN.md) | Diagram: [diagram.mmd](projects/20250908_090823_Build_a_real-time_chat_application_with_encryption/diagram.mmd) | SVG: [diagram.svg](projects/20250908_090823_Build_a_real-time_chat_application_with_encryption/diagram.svg) | PNG: [diagram.png](projects/20250908_090823_Build_a_real-time_chat_application_with_encryption/diagram.png) | Conversation: [conversation.md](projects/20250908_090823_Build_a_real-time_chat_application_with_encryption/conversation.md)
 ![Diagram](projects/20250908_090823_Build_a_real-time_chat_application_with_encryption/diagram.svg)
+
+
+### 2025-09-09 09:08:40.558514 — Create a real-time collaborative code editor
+- Folder: `projects/20250909_090744_Create_a_real-time_collaborative_code_editor`
+- Design: [DESIGN.md](projects/20250909_090744_Create_a_real-time_collaborative_code_editor/DESIGN.md) | Diagram: [diagram.mmd](projects/20250909_090744_Create_a_real-time_collaborative_code_editor/diagram.mmd) | SVG: [diagram.svg](projects/20250909_090744_Create_a_real-time_collaborative_code_editor/diagram.svg) | PNG: [diagram.png](projects/20250909_090744_Create_a_real-time_collaborative_code_editor/diagram.png) | Conversation: [conversation.md](projects/20250909_090744_Create_a_real-time_collaborative_code_editor/conversation.md)
+![Diagram](projects/20250909_090744_Create_a_real-time_collaborative_code_editor/diagram.svg)

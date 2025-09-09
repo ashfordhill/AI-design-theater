@@ -1,0 +1,46 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1((Load Balancer - Nginx))
+    api1[API Gateway - Kong]
+    ws1[WebSocket Service - Node.js]
+    editorService[Code Editor Service - Go]
+    authService[Authentication Service - JWT, Node.js]
+    collabService[Collaboration Service - Elixir, Phoenix]
+    db1[(User Database - PostgreSQL)]
+    db2[(Document Database - MongoDB)]
+    cache1{Session Cache - Redis}
+    messageQueue[Message Queue - Kafka]
+    external1[[External Code Analysis API - REST]]
+
+    lb1 -->|HTTP traffic| api1
+    api1 -->|API call| authService
+    api1 -->|API call| editorService
+    api1 -->|API call| collabService
+    api1 -->|Database query| db1
+    api1 -->|Database query| db2
+    ws1 -->|WebSocket connection| collabService
+    collabService -->|Publish events| messageQueue
+    messageQueue -->|Subscribe to events| collabService
+    collabService -->|API call| external1
+    authService -->|Session storage| cache1
+    cache1 -->|Session retrieval| authService
+
+    class lb1 userInterface
+    class api1 apiLayer
+    class ws1 service
+    class editorService service
+    class authService service
+    class collabService service
+    class db1 database
+    class db2 database
+    class cache1 cache
+    class messageQueue service
+    class external1 external
