@@ -301,3 +301,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250909_090744_Create_a_real-time_collaborative_code_editor`
 - Design: [DESIGN.md](projects/20250909_090744_Create_a_real-time_collaborative_code_editor/DESIGN.md) | Diagram: [diagram.mmd](projects/20250909_090744_Create_a_real-time_collaborative_code_editor/diagram.mmd) | SVG: [diagram.svg](projects/20250909_090744_Create_a_real-time_collaborative_code_editor/diagram.svg) | PNG: [diagram.png](projects/20250909_090744_Create_a_real-time_collaborative_code_editor/diagram.png) | Conversation: [conversation.md](projects/20250909_090744_Create_a_real-time_collaborative_code_editor/conversation.md)
 ![Diagram](projects/20250909_090744_Create_a_real-time_collaborative_code_editor/diagram.svg)
+
+
+### 2025-09-10 09:08:33.531758 — Design a distributed caching system
+- Folder: `projects/20250910_090716_Design_a_distributed_caching_system`
+- Design: [DESIGN.md](projects/20250910_090716_Design_a_distributed_caching_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20250910_090716_Design_a_distributed_caching_system/diagram.mmd) | SVG: [diagram.svg](projects/20250910_090716_Design_a_distributed_caching_system/diagram.svg) | PNG: [diagram.png](projects/20250910_090716_Design_a_distributed_caching_system/diagram.png) | Conversation: [conversation.md](projects/20250910_090716_Design_a_distributed_caching_system/conversation.md)
+![Diagram](projects/20250910_090716_Design_a_distributed_caching_system/diagram.svg)
