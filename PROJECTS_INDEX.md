@@ -319,3 +319,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250912_090717_Design_a_secure_multi-tenant_SaaS_platform`
 - Design: [DESIGN.md](projects/20250912_090717_Design_a_secure_multi-tenant_SaaS_platform/DESIGN.md) | Diagram: [diagram.mmd](projects/20250912_090717_Design_a_secure_multi-tenant_SaaS_platform/diagram.mmd) | SVG: [diagram.svg](projects/20250912_090717_Design_a_secure_multi-tenant_SaaS_platform/diagram.svg) | PNG: [diagram.png](projects/20250912_090717_Design_a_secure_multi-tenant_SaaS_platform/diagram.png) | Conversation: [conversation.md](projects/20250912_090717_Design_a_secure_multi-tenant_SaaS_platform/conversation.md)
 ![Diagram](projects/20250912_090717_Design_a_secure_multi-tenant_SaaS_platform/diagram.svg)
+
+
+### 2025-09-13 09:07:24.869770 — Build a serverless image processing pipeline
+- Folder: `projects/20250913_090618_Build_a_serverless_image_processing_pipeline`
+- Design: [DESIGN.md](projects/20250913_090618_Build_a_serverless_image_processing_pipeline/DESIGN.md) | Diagram: [diagram.mmd](projects/20250913_090618_Build_a_serverless_image_processing_pipeline/diagram.mmd) | SVG: [diagram.svg](projects/20250913_090618_Build_a_serverless_image_processing_pipeline/diagram.svg) | PNG: [diagram.png](projects/20250913_090618_Build_a_serverless_image_processing_pipeline/diagram.png) | Conversation: [conversation.md](projects/20250913_090618_Build_a_serverless_image_processing_pipeline/conversation.md)
+![Diagram](projects/20250913_090618_Build_a_serverless_image_processing_pipeline/diagram.svg)
