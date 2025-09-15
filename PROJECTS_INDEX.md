@@ -331,3 +331,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250914_090644_Design_a_distributed_caching_system`
 - Design: [DESIGN.md](projects/20250914_090644_Design_a_distributed_caching_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20250914_090644_Design_a_distributed_caching_system/diagram.mmd) | SVG: [diagram.svg](projects/20250914_090644_Design_a_distributed_caching_system/diagram.svg) | PNG: [diagram.png](projects/20250914_090644_Design_a_distributed_caching_system/diagram.png) | Conversation: [conversation.md](projects/20250914_090644_Design_a_distributed_caching_system/conversation.md)
 ![Diagram](projects/20250914_090644_Design_a_distributed_caching_system/diagram.svg)
+
+
+### 2025-09-15 09:09:09.856829 — Design a secure multi-tenant SaaS platform
+- Folder: `projects/20250915_090825_Design_a_secure_multi-tenant_SaaS_platform`
+- Design: [DESIGN.md](projects/20250915_090825_Design_a_secure_multi-tenant_SaaS_platform/DESIGN.md) | Diagram: [diagram.mmd](projects/20250915_090825_Design_a_secure_multi-tenant_SaaS_platform/diagram.mmd) | SVG: [diagram.svg](projects/20250915_090825_Design_a_secure_multi-tenant_SaaS_platform/diagram.svg) | PNG: [diagram.png](projects/20250915_090825_Design_a_secure_multi-tenant_SaaS_platform/diagram.png) | Conversation: [conversation.md](projects/20250915_090825_Design_a_secure_multi-tenant_SaaS_platform/conversation.md)
+![Diagram](projects/20250915_090825_Design_a_secure_multi-tenant_SaaS_platform/diagram.svg)
