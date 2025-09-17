@@ -1,0 +1,43 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1[Load Balancer - Nginx]
+    apiGateway[API Gateway - Kong]
+    authService[Authentication Service - Node.js,...]
+    collabService[Collaboration Service - Elixir, Phoenix]
+    editorService[Editor Service - React, Redux]
+    notificationService[Notification Service - Node.js,...]
+    database[(User Data Database - PostgreSQL)]
+    cache{Session Cache - Redis}
+    messageQueue[Message Queue - Kafka]
+    externalAuth[[External Authentication - OAuth 2.0]]
+
+    lb1 -->|HTTP request routing| apiGateway
+    apiGateway -->|API call for authentication| authService
+    apiGateway -->|API call for collaboration| collabService
+    apiGateway -->|API call for editor operations| editorService
+    authService -->|User data retrieval and storage| database
+    authService -->|Session management| cache
+    collabService -->|Real-time collaboration events| messageQueue
+    notificationService -->|Notification events| messageQueue
+    messageQueue -->|Event processing for collaboration| collabService
+    editorService -->|Editor updates and state management| collabService
+    authService -->|OAuth 2.0 authentication| externalAuth
+
+    class lb1 service
+    class apiGateway apiLayer
+    class authService service
+    class collabService service
+    class editorService service
+    class notificationService service
+    class database database
+    class cache cache
+    class messageQueue service
+    class externalAuth external
