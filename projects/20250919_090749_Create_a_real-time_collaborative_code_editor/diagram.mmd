@@ -1,0 +1,43 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1((Load Balancer - NGINX))
+    api_gateway[API Gateway - Kong]
+    auth_service[Authentication Service - Express.js, JWT]
+    collab_service[Collaboration Service - Node.js,...]
+    editor_service[Editor Service - React, Redux]
+    notification_service[Notification Service - RabbitMQ]
+    user_db[(User Database - PostgreSQL)]
+    session_db[(Session Database - Redis)]
+    file_storage[[File Storage - AWS S3]]
+    analytics_service[Analytics Service - Apache Kafka]
+
+    lb1 -->|HTTP traffic| api_gateway
+    api_gateway -->|API call| auth_service
+    api_gateway -->|API call| collab_service
+    api_gateway -->|API call| editor_service
+    api_gateway -->|API call| notification_service
+    auth_service -->|DB query| user_db
+    collab_service -->|DB query| session_db
+    collab_service -->|File storage| file_storage
+    notification_service -->|Message queue| collab_service
+    collab_service -->|Event stream| analytics_service
+    editor_service -->|WebSocket connection| collab_service
+
+    class lb1 userInterface
+    class api_gateway apiLayer
+    class auth_service service
+    class collab_service service
+    class editor_service service
+    class notification_service service
+    class user_db database
+    class session_db database
+    class file_storage external
+    class analytics_service service

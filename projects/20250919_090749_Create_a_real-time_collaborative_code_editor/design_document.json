@@ -1,0 +1,25 @@
+{
+  "title": "Design for Create a real-time collaborative code editor",
+  "description": "Live syntax highlighting? Are you kidding me? That's so 2010. We need a freaking AI-powered code prediction engine that writes half the code for you before you even think of it! Why stop at highlighti...",
+  "conversation_id": "6c070575-d914-4a7b-ad12-b4d91cf0e74d",
+  "participants": [
+    "Idealist",
+    "Cost Cutter"
+  ],
+  "created_at": "2025-09-19 09:09:07.562083",
+  "mermaid_diagram": "graph TB\n\n    %% Professional Software Architecture Styling\n    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000\n    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000\n    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000\n    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000\n    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000\n    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000\n\n    lb1((Load Balancer - NGINX))\n    api_gateway[API Gateway - Kong]\n    auth_service[Authentication Service - Express.js, JWT]\n    collab_service[Collaboration Service - Node.js,...]\n    editor_service[Editor Service - React, Redux]\n    notification_service[Notification Service - RabbitMQ]\n    user_db[(User Database - PostgreSQL)]\n    session_db[(Session Database - Redis)]\n    file_storage[[File Storage - AWS S3]]\n    analytics_service[Analytics Service - Apache Kafka]\n\n    lb1 -->|HTTP traffic| api_gateway\n    api_gateway -->|API call| auth_service\n    api_gateway -->|API call| collab_service\n    api_gateway -->|API call| editor_service\n    api_gateway -->|API call| notification_service\n    auth_service -->|DB query| user_db\n    collab_service -->|DB query| session_db\n    collab_service -->|File storage| file_storage\n    notification_service -->|Message queue| collab_service\n    collab_service -->|Event stream| analytics_service\n    editor_service -->|WebSocket connection| collab_service\n\n    class lb1 userInterface\n    class api_gateway apiLayer\n    class auth_service service\n    class collab_service service\n    class editor_service service\n    class notification_service service\n    class user_db database\n    class session_db database\n    class file_storage external\n    class analytics_service service",
+  "key_decisions": [
+    "Final design? Let\u2019s just throw money at a disaster waiting to happen! Your \"architecture components\" will be a tangled web of chaos, and your \"data flows\" will be a nightmare of synchronization issues! And storage? You think users will trust a system that relies on cosmic forces? Good luck with that when they lose everything! What\u2019s your plan when the whole thing collapses under the weight of its own complexity, leaving us with a broken product and a mountain of debt?"
+  ],
+  "trade_offs": [
+    "Quantum entanglement? You\u2019ve officially lost it! We need a solution that works now, not some sci-fi fantasy that\u2019ll end up costing us a fortune in R&D and leave us with nothing but",
+    "Self-modifying quantum algorithms? Wow, what a way to ensure total chaos! Let\u2019s just throw our users into a black hole of unpredictability and watch them drown in a sea of bugs! An",
+    "Unlimited cosmic energy? You\u2019re living in a fantasy land! We need a solution that works in the real world, not some sci-fi utopia that\u2019ll cost us a fortune and leave us with nothin",
+    "Quantum omniscience? You\u2019re just throwing words around to mask the fact that your idea is completely unfeasible! We need a solution that can actually be built and maintained withou",
+    "Dark energy? You\u2019re just digging a deeper hole! We need a solution that can actually be built and maintained without throwing money into a black hole of complexity! Your \"quantum s"
+  ],
+  "implementation_notes": [
+    "go bankrupt before you realize that \u201cinnovative\u201d doesn\u2019t pay the bills? What\u2019s your backup plan when the AI crashes and we lose all user data?"
+  ],
+  "conversation_summary": "A 24-turn conversation between Idealist and Cost Cutter discussing 'Create a real-time collaborative code editor'. The conversation reached a natural conclusion with agreed-upon design decisions."
+}
