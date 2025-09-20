@@ -1,0 +1,38 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb-1((Load Balancer - NGINX))
+    api-gateway-1[API Gateway - Kong]
+    cache-service-1[Cache Service - Redis]
+    cache-service-2[Cache Service - Memcached]
+    data-store-1[(Primary Data Store - PostgreSQL)]
+    message-queue-1[Message Queue - Kafka]
+    monitoring-1[Monitoring Service - Prometheus]
+    analytics-1[Analytics Service - Elasticsearch]
+
+    lb-1 -->|HTTP requests| api-gateway-1
+    api-gateway-1 -->|cache read/write| cache-service-1
+    api-gateway-1 -->|cache read/write| cache-service-2
+    cache-service-1 -->|fallback data retrieval| data-store-1
+    cache-service-2 -->|fallback data retrieval| data-store-1
+    api-gateway-1 -->|event publishing| message-queue-1
+    message-queue-1 -->|data streaming| analytics-1
+    api-gateway-1 -->|metrics reporting| monitoring-1
+    cache-service-1 -->|cache metrics| monitoring-1
+    cache-service-2 -->|cache metrics| monitoring-1
+
+    class lb-1 userInterface
+    class api-gateway-1 apiLayer
+    class cache-service-1 service
+    class cache-service-2 service
+    class data-store-1 database
+    class message-queue-1 service
+    class monitoring-1 service
+    class analytics-1 service
