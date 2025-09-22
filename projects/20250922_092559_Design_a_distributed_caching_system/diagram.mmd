@@ -1,0 +1,37 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1((Load Balancer - NGINX))
+    api_gateway[API Gateway - Kong]
+    cache_service[Distributed Cache Service - Redis...]
+    data_service[Data Service - Node.js]
+    database[(Database - PostgreSQL)]
+    monitoring[Monitoring Service - Prometheus]
+    cache_monitor[Cache Monitoring - Grafana]
+    client((Client Application - Web/Mobile))
+
+    client -->|HTTP request| lb1
+    lb1 -->|HTTP request| api_gateway
+    api_gateway -->|Cache lookup| cache_service
+    api_gateway -->|Data request| data_service
+    data_service -->|Database query| database
+    cache_service -->|Cache hit| data_service
+    cache_service -->|Metrics| monitoring
+    cache_service -->|Metrics| cache_monitor
+    monitoring -->|Visualization| cache_monitor
+
+    class lb1 userInterface
+    class api_gateway apiLayer
+    class cache_service service
+    class data_service service
+    class database database
+    class monitoring service
+    class cache_monitor service
+    class client userInterface

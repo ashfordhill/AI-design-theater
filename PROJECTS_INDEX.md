@@ -373,3 +373,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250921_090705_Design_a_container_orchestration_strategy`
 - Design: [DESIGN.md](projects/20250921_090705_Design_a_container_orchestration_strategy/DESIGN.md) | Diagram: [diagram.mmd](projects/20250921_090705_Design_a_container_orchestration_strategy/diagram.mmd) | SVG: [diagram.svg](projects/20250921_090705_Design_a_container_orchestration_strategy/diagram.svg) | PNG: [diagram.png](projects/20250921_090705_Design_a_container_orchestration_strategy/diagram.png) | Conversation: [conversation.md](projects/20250921_090705_Design_a_container_orchestration_strategy/conversation.md)
 ![Diagram](projects/20250921_090705_Design_a_container_orchestration_strategy/diagram.svg)
+
+
+### 2025-09-22 09:26:44.135788 — Design a distributed caching system
+- Folder: `projects/20250922_092559_Design_a_distributed_caching_system`
+- Design: [DESIGN.md](projects/20250922_092559_Design_a_distributed_caching_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20250922_092559_Design_a_distributed_caching_system/diagram.mmd) | SVG: [diagram.svg](projects/20250922_092559_Design_a_distributed_caching_system/diagram.svg) | PNG: [diagram.png](projects/20250922_092559_Design_a_distributed_caching_system/diagram.png) | Conversation: [conversation.md](projects/20250922_092559_Design_a_distributed_caching_system/conversation.md)
+![Diagram](projects/20250922_092559_Design_a_distributed_caching_system/diagram.svg)
