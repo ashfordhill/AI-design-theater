@@ -1,0 +1,43 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1((Load Balancer - NGINX))
+    api1[API Gateway - AWS API Gateway]
+    service1[Fraud Detection Service - Spring Boot]
+    service2[User Activity Tracking Service - Node.js]
+    service3[Alert Notification Service - RabbitMQ]
+    db1[(User Data Database - PostgreSQL)]
+    db2[(Fraud Detection Model Database - MongoDB)]
+    cache1{In-Memory Cache - Redis}
+    stream1[[Event Stream - Apache Kafka]]
+    external1[[Third-Party Risk Assessment API - REST]]
+
+    lb1 -->|HTTP request routing| api1
+    api1 -->|API call| service1
+    api1 -->|API call| service2
+    service1 -->|Database query| db1
+    service1 -->|Database query| db2
+    service1 -->|Cache lookup| cache1
+    service1 -->|Event publishing| stream1
+    service2 -->|Cache lookup| cache1
+    service2 -->|API call| external1
+    service1 -->|Message queue| service3
+    service3 -->|API call| external1
+
+    class lb1 userInterface
+    class api1 apiLayer
+    class service1 service
+    class service2 service
+    class service3 service
+    class db1 database
+    class db2 database
+    class cache1 cache
+    class stream1 external
+    class external1 external
