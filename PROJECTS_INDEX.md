@@ -397,3 +397,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250925_092239_Design_a_microservices_monitoring_platform`
 - Design: [DESIGN.md](projects/20250925_092239_Design_a_microservices_monitoring_platform/DESIGN.md) | Diagram: [diagram.mmd](projects/20250925_092239_Design_a_microservices_monitoring_platform/diagram.mmd) | SVG: [diagram.svg](projects/20250925_092239_Design_a_microservices_monitoring_platform/diagram.svg) | PNG: [diagram.png](projects/20250925_092239_Design_a_microservices_monitoring_platform/diagram.png) | Conversation: [conversation.md](projects/20250925_092239_Design_a_microservices_monitoring_platform/conversation.md)
 ![Diagram](projects/20250925_092239_Design_a_microservices_monitoring_platform/diagram.svg)
+
+
+### 2025-09-26 09:23:41.605007 — Design a distributed caching system
+- Folder: `projects/20250926_092252_Design_a_distributed_caching_system`
+- Design: [DESIGN.md](projects/20250926_092252_Design_a_distributed_caching_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20250926_092252_Design_a_distributed_caching_system/diagram.mmd) | SVG: [diagram.svg](projects/20250926_092252_Design_a_distributed_caching_system/diagram.svg) | PNG: [diagram.png](projects/20250926_092252_Design_a_distributed_caching_system/diagram.png) | Conversation: [conversation.md](projects/20250926_092252_Design_a_distributed_caching_system/conversation.md)
+![Diagram](projects/20250926_092252_Design_a_distributed_caching_system/diagram.svg)
