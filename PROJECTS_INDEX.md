@@ -403,3 +403,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250926_092252_Design_a_distributed_caching_system`
 - Design: [DESIGN.md](projects/20250926_092252_Design_a_distributed_caching_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20250926_092252_Design_a_distributed_caching_system/diagram.mmd) | SVG: [diagram.svg](projects/20250926_092252_Design_a_distributed_caching_system/diagram.svg) | PNG: [diagram.png](projects/20250926_092252_Design_a_distributed_caching_system/diagram.png) | Conversation: [conversation.md](projects/20250926_092252_Design_a_distributed_caching_system/conversation.md)
 ![Diagram](projects/20250926_092252_Design_a_distributed_caching_system/diagram.svg)
+
+
+### 2025-09-27 09:19:21.839824 — Create a real-time collaborative code editor
+- Folder: `projects/20250927_091833_Create_a_real-time_collaborative_code_editor`
+- Design: [DESIGN.md](projects/20250927_091833_Create_a_real-time_collaborative_code_editor/DESIGN.md) | Diagram: [diagram.mmd](projects/20250927_091833_Create_a_real-time_collaborative_code_editor/diagram.mmd) | SVG: [diagram.svg](projects/20250927_091833_Create_a_real-time_collaborative_code_editor/diagram.svg) | PNG: [diagram.png](projects/20250927_091833_Create_a_real-time_collaborative_code_editor/diagram.png) | Conversation: [conversation.md](projects/20250927_091833_Create_a_real-time_collaborative_code_editor/conversation.md)
+![Diagram](projects/20250927_091833_Create_a_real-time_collaborative_code_editor/diagram.svg)
