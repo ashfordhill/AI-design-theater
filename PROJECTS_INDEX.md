@@ -409,3 +409,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20250927_091833_Create_a_real-time_collaborative_code_editor`
 - Design: [DESIGN.md](projects/20250927_091833_Create_a_real-time_collaborative_code_editor/DESIGN.md) | Diagram: [diagram.mmd](projects/20250927_091833_Create_a_real-time_collaborative_code_editor/diagram.mmd) | SVG: [diagram.svg](projects/20250927_091833_Create_a_real-time_collaborative_code_editor/diagram.svg) | PNG: [diagram.png](projects/20250927_091833_Create_a_real-time_collaborative_code_editor/diagram.png) | Conversation: [conversation.md](projects/20250927_091833_Create_a_real-time_collaborative_code_editor/conversation.md)
 ![Diagram](projects/20250927_091833_Create_a_real-time_collaborative_code_editor/diagram.svg)
+
+
+### 2025-09-28 09:19:12.105071 — Build a serverless image processing pipeline
+- Folder: `projects/20250928_091833_Build_a_serverless_image_processing_pipeline`
+- Design: [DESIGN.md](projects/20250928_091833_Build_a_serverless_image_processing_pipeline/DESIGN.md) | Diagram: [diagram.mmd](projects/20250928_091833_Build_a_serverless_image_processing_pipeline/diagram.mmd) | SVG: [diagram.svg](projects/20250928_091833_Build_a_serverless_image_processing_pipeline/diagram.svg) | PNG: [diagram.png](projects/20250928_091833_Build_a_serverless_image_processing_pipeline/diagram.png) | Conversation: [conversation.md](projects/20250928_091833_Build_a_serverless_image_processing_pipeline/conversation.md)
+![Diagram](projects/20250928_091833_Build_a_serverless_image_processing_pipeline/diagram.svg)
