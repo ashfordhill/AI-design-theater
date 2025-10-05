@@ -1,0 +1,26 @@
+{
+  "title": "Design for Create a real-time collaborative code editor",
+  "description": "A real-time collaborative editor? With syntax highlighting? How quaint. Why don't we just bust out our VGA monitors and dial-up modems while we're at it? Look, if we're not building this on a decentra...",
+  "conversation_id": "b9df0fa0-74e5-427d-8324-52fb8e3c19ce",
+  "participants": [
+    "Idealist",
+    "Cost Cutter"
+  ],
+  "created_at": "2025-10-05 09:07:30.333531",
+  "mermaid_diagram": "graph TB\n\n    %% Professional Software Architecture Styling\n    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000\n    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000\n    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000\n    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000\n    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000\n    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000\n\n    lb-1((Load Balancer - NGINX))\n    api-gateway-1[API Gateway - Kong]\n    auth-service-1[Authentication Service - Express.js, JWT]\n    editor-service-1[Real-time Editor Service - Node.js,...]\n    collaboration-service-1[Collaboration Service - Elixir,...]\n    document-db-1[(Document Database - MongoDB)]\n    user-db-1[(User Database - PostgreSQL)]\n    cache-1{In-memory Cache - Redis}\n    message-queue-1[Message Queue - Kafka]\n    external-1[[External Authentication Provider - Auth0]]\n\n    lb-1 -->|HTTP traffic| api-gateway-1\n    api-gateway-1 -->|API call| auth-service-1\n    api-gateway-1 -->|API call| editor-service-1\n    api-gateway-1 -->|API call| collaboration-service-1\n    auth-service-1 -->|OAuth2 flow| external-1\n    auth-service-1 -->|DB query| user-db-1\n    editor-service-1 -->|DB query| document-db-1\n    editor-service-1 -->|Cache read/write| cache-1\n    collaboration-service-1 -->|Event publishing| message-queue-1\n    message-queue-1 -->|Event consumption| collaboration-service-1\n    collaboration-service-1 -->|Real-time updates| editor-service-1\n\n    class lb-1 userInterface\n    class api-gateway-1 apiLayer\n    class auth-service-1 service\n    class editor-service-1 service\n    class collaboration-service-1 service\n    class document-db-1 database\n    class user-db-1 database\n    class cache-1 cache\n    class message-queue-1 service\n    class external-1 external",
+  "key_decisions": [
+    "federated learning on edge devices to optimize performance and slash server costs",
+    "sharding and layer-2 solutions to handle millions of concurrent edits",
+    "semantic versioning with automated compatibility checks in CI/CD",
+    "federated learning to continuously improve performance and security"
+  ],
+  "trade_offs": [
+    "GraphQL? How adorable. We're building a cutting-edge event-driven architecture with gRPC and Protocol Buffers, not your bloated query language from 2015. Our system will use QUIC f",
+    "A monolith? In this economy? Wake up and smell the serverless coffee, grandpa! Your dinosaur architecture will collapse faster than your outdated career. We're building a cutting-e"
+  ],
+  "implementation_notes": [
+    "Oh, please! You want to throw money at a \"decentralized blockchain\"? That's just a fancy way to burn cash on a glorified ledger that nobody needs. And don't get me started on stora",
+    "WASM and edge computing? Wow, you really think you're the next tech visionary, don\u2019t you? Let\u2019s see how well that holds up when your fancy modules have to communicate across multip"
+  ],
+  "conversation_summary": "A 13-turn conversation between Idealist and Cost Cutter discussing 'Create a real-time collaborative code editor'. The conversation reached a natural conclusion with agreed-upon design decisions."
+}

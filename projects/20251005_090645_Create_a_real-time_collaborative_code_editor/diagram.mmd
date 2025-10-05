@@ -1,0 +1,43 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb-1((Load Balancer - NGINX))
+    api-gateway-1[API Gateway - Kong]
+    auth-service-1[Authentication Service - Express.js, JWT]
+    editor-service-1[Real-time Editor Service - Node.js,...]
+    collaboration-service-1[Collaboration Service - Elixir,...]
+    document-db-1[(Document Database - MongoDB)]
+    user-db-1[(User Database - PostgreSQL)]
+    cache-1{In-memory Cache - Redis}
+    message-queue-1[Message Queue - Kafka]
+    external-1[[External Authentication Provider - Auth0]]
+
+    lb-1 -->|HTTP traffic| api-gateway-1
+    api-gateway-1 -->|API call| auth-service-1
+    api-gateway-1 -->|API call| editor-service-1
+    api-gateway-1 -->|API call| collaboration-service-1
+    auth-service-1 -->|OAuth2 flow| external-1
+    auth-service-1 -->|DB query| user-db-1
+    editor-service-1 -->|DB query| document-db-1
+    editor-service-1 -->|Cache read/write| cache-1
+    collaboration-service-1 -->|Event publishing| message-queue-1
+    message-queue-1 -->|Event consumption| collaboration-service-1
+    collaboration-service-1 -->|Real-time updates| editor-service-1
+
+    class lb-1 userInterface
+    class api-gateway-1 apiLayer
+    class auth-service-1 service
+    class editor-service-1 service
+    class collaboration-service-1 service
+    class document-db-1 database
+    class user-db-1 database
+    class cache-1 cache
+    class message-queue-1 service
+    class external-1 external
