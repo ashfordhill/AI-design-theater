@@ -463,3 +463,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20251006_090844_Build_a_real-time_chat_application_with_encryption`
 - Design: [DESIGN.md](projects/20251006_090844_Build_a_real-time_chat_application_with_encryption/DESIGN.md) | Diagram: [diagram.mmd](projects/20251006_090844_Build_a_real-time_chat_application_with_encryption/diagram.mmd) | SVG: [diagram.svg](projects/20251006_090844_Build_a_real-time_chat_application_with_encryption/diagram.svg) | PNG: [diagram.png](projects/20251006_090844_Build_a_real-time_chat_application_with_encryption/diagram.png) | Conversation: [conversation.md](projects/20251006_090844_Build_a_real-time_chat_application_with_encryption/conversation.md)
 ![Diagram](projects/20251006_090844_Build_a_real-time_chat_application_with_encryption/diagram.svg)
+
+
+### 2025-10-07 09:08:27.351853 — Design a distributed caching system
+- Folder: `projects/20251007_090732_Design_a_distributed_caching_system`
+- Design: [DESIGN.md](projects/20251007_090732_Design_a_distributed_caching_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20251007_090732_Design_a_distributed_caching_system/diagram.mmd) | SVG: [diagram.svg](projects/20251007_090732_Design_a_distributed_caching_system/diagram.svg) | PNG: [diagram.png](projects/20251007_090732_Design_a_distributed_caching_system/diagram.png) | Conversation: [conversation.md](projects/20251007_090732_Design_a_distributed_caching_system/conversation.md)
+![Diagram](projects/20251007_090732_Design_a_distributed_caching_system/diagram.svg)
