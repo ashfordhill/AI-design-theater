@@ -1,0 +1,36 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    loadBalancer((Load Balancer - NGINX))
+    apiGateway[API Gateway - Kong]
+    cacheService[Distributed Cache Service - Redis...]
+    dataService[Data Service - Node.js, Express]
+    database[(Primary Database - PostgreSQL)]
+    messageQueue[Message Queue - Apache Kafka]
+    monitoring[Monitoring Service - Prometheus]
+    cacheClient((Cache Client - Client Libraries))
+
+    loadBalancer -->|HTTP Traffic| apiGateway
+    apiGateway -->|API Requests| dataService
+    dataService -->|Cache Reads/Writes| cacheService
+    dataService -->|Database Queries| database
+    dataService -->|Event Publishing| messageQueue
+    cacheClient -->|Cache Access| apiGateway
+    monitoring -->|Metrics Collection| dataService
+    monitoring -->|Metrics Collection| cacheService
+
+    class loadBalancer userInterface
+    class apiGateway apiLayer
+    class cacheService service
+    class dataService service
+    class database database
+    class messageQueue service
+    class monitoring service
+    class cacheClient userInterface
