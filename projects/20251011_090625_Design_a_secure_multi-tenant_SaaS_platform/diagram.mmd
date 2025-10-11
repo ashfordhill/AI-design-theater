@@ -1,0 +1,52 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1[Load Balancer - NGINX]
+    api_gateway[API Gateway - AWS API Gateway]
+    auth_service[Authentication Service - Okta]
+    user_service[User Management Service - Spring Boot]
+    tenant_service[Tenant Management Service - Spring Boot]
+    data_service[Data Processing Service - Apache Kafka]
+    db1[(User Database - PostgreSQL)]
+    db2[(Tenant Database - PostgreSQL)]
+    cache{Cache - Redis}
+    monitoring[Monitoring Service - Prometheus]
+    logging[Logging Service - ELK Stack]
+    external_api[[External API - Third-party Service]]
+
+    lb1 -->|routes requests to| api_gateway
+    api_gateway -->|authenticates users| auth_service
+    api_gateway -->|manages user data| user_service
+    api_gateway -->|manages tenant data| tenant_service
+    api_gateway -->|processes data| data_service
+    user_service -->|reads/writes user data| db1
+    tenant_service -->|reads/writes tenant data| db2
+    data_service -->|processes user data| db1
+    data_service -->|processes tenant data| db2
+    user_service -->|caches user sessions| cache
+    tenant_service -->|caches tenant configurations| cache
+    api_gateway -->|integrates with| external_api
+    monitoring -->|monitors performance| user_service
+    monitoring -->|monitors performance| tenant_service
+    logging -->|logs events| user_service
+    logging -->|logs events| tenant_service
+
+    class lb1 service
+    class api_gateway apiLayer
+    class auth_service service
+    class user_service service
+    class tenant_service service
+    class data_service service
+    class db1 database
+    class db2 database
+    class cache cache
+    class monitoring service
+    class logging service
+    class external_api external
