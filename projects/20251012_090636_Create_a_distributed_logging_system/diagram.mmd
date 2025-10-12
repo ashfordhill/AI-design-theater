@@ -1,0 +1,38 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb1((Load Balancer - Nginx))
+    api1[API Gateway - Kong]
+    service1[Log Ingestion Service - Node.js]
+    service2[Log Processing Service - Apache Kafka]
+    service3[Log Storage Service - Elasticsearch]
+    db1[(Metadata Database - PostgreSQL)]
+    cache1{Cache - Redis}
+    external1[[Monitoring Service - Prometheus]]
+    external2[[Alerting Service - Alertmanager]]
+
+    lb1 -->|HTTP Traffic| api1
+    api1 -->|API Calls| service1
+    service1 -->|Log Events| service2
+    service2 -->|Processed Logs| service3
+    service3 -->|Store Metadata| db1
+    service3 -->|Cache Recent Logs| cache1
+    service3 -->|Send Metrics| external1
+    service3 -->|Send Alerts| external2
+
+    class lb1 userInterface
+    class api1 apiLayer
+    class service1 service
+    class service2 service
+    class service3 service
+    class db1 database
+    class cache1 cache
+    class external1 external
+    class external2 external
