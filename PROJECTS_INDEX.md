@@ -505,3 +505,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20251013_090901_Design_a_blockchain-based_supply_chain_tracker`
 - Design: [DESIGN.md](projects/20251013_090901_Design_a_blockchain-based_supply_chain_tracker/DESIGN.md) | Diagram: [diagram.mmd](projects/20251013_090901_Design_a_blockchain-based_supply_chain_tracker/diagram.mmd) | SVG: [diagram.svg](projects/20251013_090901_Design_a_blockchain-based_supply_chain_tracker/diagram.svg) | PNG: [diagram.png](projects/20251013_090901_Design_a_blockchain-based_supply_chain_tracker/diagram.png) | Conversation: [conversation.md](projects/20251013_090901_Design_a_blockchain-based_supply_chain_tracker/conversation.md)
 ![Diagram](projects/20251013_090901_Design_a_blockchain-based_supply_chain_tracker/diagram.svg)
+
+
+### 2025-10-14 09:08:24.847619 — Create a real-time fraud detection system
+- Folder: `projects/20251014_090745_Create_a_real-time_fraud_detection_system`
+- Design: [DESIGN.md](projects/20251014_090745_Create_a_real-time_fraud_detection_system/DESIGN.md) | Diagram: [diagram.mmd](projects/20251014_090745_Create_a_real-time_fraud_detection_system/diagram.mmd) | SVG: [diagram.svg](projects/20251014_090745_Create_a_real-time_fraud_detection_system/diagram.svg) | PNG: [diagram.png](projects/20251014_090745_Create_a_real-time_fraud_detection_system/diagram.png) | Conversation: [conversation.md](projects/20251014_090745_Create_a_real-time_fraud_detection_system/conversation.md)
+![Diagram](projects/20251014_090745_Create_a_real-time_fraud_detection_system/diagram.svg)

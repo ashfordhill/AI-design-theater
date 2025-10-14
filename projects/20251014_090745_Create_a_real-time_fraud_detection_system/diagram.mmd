@@ -1,0 +1,45 @@
+graph TB
+
+    %% Professional Software Architecture Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef apiLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef service fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef cache fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef external fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+
+    lb-1((Load Balancer - Nginx))
+    api-gateway-1[API Gateway - Kong]
+    user-service-1[User Service - Node.js]
+    transaction-service-1[Transaction Service - Spring Boot]
+    fraud-detection-service-1[Fraud Detection Service - Python...]
+    notification-service-1[Notification Service - Ruby on Rails]
+    database-1[(User Database - PostgreSQL)]
+    database-2[(Transaction Database - PostgreSQL)]
+    cache-1{In-Memory Cache - Redis}
+    message-queue-1[Message Queue - Apache Kafka]
+    external-api-1[[External Fraud Database -...]]
+
+    lb-1 -->|HTTP traffic| api-gateway-1
+    api-gateway-1 -->|REST API| user-service-1
+    api-gateway-1 -->|REST API| transaction-service-1
+    transaction-service-1 -->|SQL Query| database-2
+    user-service-1 -->|SQL Query| database-1
+    transaction-service-1 -->|Event| message-queue-1
+    message-queue-1 -->|Event| fraud-detection-service-1
+    fraud-detection-service-1 -->|Cache Update| cache-1
+    fraud-detection-service-1 -->|API Call| external-api-1
+    fraud-detection-service-1 -->|Event| notification-service-1
+    notification-service-1 -->|Webhook| api-gateway-1
+
+    class lb-1 userInterface
+    class api-gateway-1 apiLayer
+    class user-service-1 service
+    class transaction-service-1 service
+    class fraud-detection-service-1 service
+    class notification-service-1 service
+    class database-1 database
+    class database-2 database
+    class cache-1 cache
+    class message-queue-1 service
+    class external-api-1 external
