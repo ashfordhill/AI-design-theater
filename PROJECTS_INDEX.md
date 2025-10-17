@@ -523,3 +523,9 @@ Automatically generated list of all projects.
 - Folder: `projects/20251016_090758_Design_a_content_delivery_network_architecture`
 - Design: [DESIGN.md](projects/20251016_090758_Design_a_content_delivery_network_architecture/DESIGN.md) | Diagram: [diagram.mmd](projects/20251016_090758_Design_a_content_delivery_network_architecture/diagram.mmd) | SVG: [diagram.svg](projects/20251016_090758_Design_a_content_delivery_network_architecture/diagram.svg) | PNG: [diagram.png](projects/20251016_090758_Design_a_content_delivery_network_architecture/diagram.png) | Conversation: [conversation.md](projects/20251016_090758_Design_a_content_delivery_network_architecture/conversation.md)
 ![Diagram](projects/20251016_090758_Design_a_content_delivery_network_architecture/diagram.svg)
+
+
+### 2025-10-17 09:08:58.526659 — Design a microservices monitoring platform
+- Folder: `projects/20251017_090746_Design_a_microservices_monitoring_platform`
+- Design: [DESIGN.md](projects/20251017_090746_Design_a_microservices_monitoring_platform/DESIGN.md) | Diagram: [diagram.mmd](projects/20251017_090746_Design_a_microservices_monitoring_platform/diagram.mmd) | SVG: [diagram.svg](projects/20251017_090746_Design_a_microservices_monitoring_platform/diagram.svg) | PNG: [diagram.png](projects/20251017_090746_Design_a_microservices_monitoring_platform/diagram.png) | Conversation: [conversation.md](projects/20251017_090746_Design_a_microservices_monitoring_platform/conversation.md)
+![Diagram](projects/20251017_090746_Design_a_microservices_monitoring_platform/diagram.svg)
